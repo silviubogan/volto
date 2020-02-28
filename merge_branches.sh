@@ -2,21 +2,26 @@
 
 set -x
 
+git remote add volto https://github.com/plone/volto.git
+git remote add tiberiuichim https://github.com/tiberiuichim/volto.git
+
 git fetch --all
 git pull
-git merge origin/export_components
-git merge origin/wysiwyg_desc_styling
-git merge origin/disable_submit
+git merge volto/export_components
 git merge tiberiuichim/sync_update
-git merge origin/fix_querystring_ssr_edit
-git merge origin/fix_querystring_missing_value
-git merge origin/fix_querystring_child_warning
-git merge origin/missing_key_in_addlinkform
 git merge tiberiuichim/navigation-refactoring
-git merge origin/master
+git merge volto/master
 
 
 # To come:
 
 # git merge origin/error_toast
 # git merge tibi/sync_render_kitchensink
+
+# Already merged to Volto master
+# git merge volto/wysiwyg_desc_styling
+# git merge volto/disable_submit
+# git merge volto/fix_querystring_ssr_edit
+# git merge volto/fix_querystring_missing_value
+# git merge volto/fix_querystring_child_warning
+# git merge tiberiuichim/navigation-refactoring
