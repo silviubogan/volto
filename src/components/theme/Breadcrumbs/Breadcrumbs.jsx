@@ -16,6 +16,7 @@ import { getBreadcrumbs } from '@plone/volto/actions';
 import { getBaseUrl } from '@plone/volto/helpers';
 
 import homeSVG from '@plone/volto/icons/home.svg';
+import { settings } from '~/config';
 
 const messages = defineMessages({
   home: {
@@ -56,7 +57,8 @@ class Breadcrumbs extends Component {
    * @returns {undefined}
    */
   UNSAFE_componentWillMount() {
-    this.props.getBreadcrumbs(getBaseUrl(this.props.pathname));
+    if (!settings.minimizeNetworkFetch)
+      this.props.getBreadcrumbs(getBaseUrl(this.props.pathname));
   }
 
   /**
@@ -66,7 +68,10 @@ class Breadcrumbs extends Component {
    * @returns {undefined}
    */
   UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.pathname !== this.props.pathname) {
+    if (
+      !settings.minimizeNetworkFetch &&
+      nextProps.pathname !== this.props.pathname
+    ) {
       this.props.getBreadcrumbs(getBaseUrl(nextProps.pathname));
     }
   }

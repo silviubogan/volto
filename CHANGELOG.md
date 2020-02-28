@@ -169,6 +169,10 @@
 
 ### Changes
 
+- Avoid console warnings in QuerystringWidget @tiberich
+
+- Avoid console warnings in AddLinkForm.jsx @tiberiuichim
+
 - Remove dangling reference to external data in Image block not used anymore, causing confusion and lead to dead (and wrong) code @sneridagh
 - Remove last remains of the append secondary actions, remove Image block toolbar. Update i18n, fix small issues in Image block @sneridagh
 
@@ -244,7 +248,16 @@
 - Fix wysiwyg widget help tag, for styling consistency @tiberiuichim
 - Added more i18n improvements @macagua
 - Disable submit button on save, to avoid multiple content creation @tiberiuichim
+
+- Export connected widget classes, to allow extending @tiberiuichim
+
+- Fix SSR rendering of Querystring Widget @tiberiuichim
+
+- Fix wysiwyg widget help tag, for styling consistency @tiberiuichim
+- Added more i18n improvements @macagua
+- Disable submit button on save, to avoid multiple content creation @tiberiuichim
 - Fix focus on sidebar @robgietema
+- Fix a problem with Querystring selections when vocab doesn't have current index value @tiberiuichim
 
 ### Internal
 
@@ -257,12 +270,15 @@
 
 - Implementation of `Portuguese (BR)` translation @LeuAlmeida
 - Added translations to spanish @macagua
+- Added ``settings.contentExpand`` and ``settings.minimizeNetworkFetch``, tweaked action calls and reducers, to allow synchronized UI updates @tiberiuichim
 - Added AlbumView @wkbktill @alexbueckig
 
 ### Changes
 
 - empty text blocks are shown as `<br />` in the view.
 - Fix double fetch due to asyncConnect being executed in browser too @robgietema @sneridagh
+
+- Fix wysiwyg widget help tag, for styling consistency @tiberiuichim
 
 ## 4.0.0-alpha.18 (2019-12-12)
 

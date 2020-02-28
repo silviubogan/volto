@@ -14,6 +14,7 @@ import cookie from 'react-cookie';
 import { filter, find } from 'lodash';
 import cx from 'classnames';
 
+import { settings } from '~/config';
 import More from '@plone/volto/components/manage/Toolbar/More';
 import PersonalTools from '@plone/volto/components/manage/Toolbar/PersonalTools';
 import Types from '@plone/volto/components/manage/Toolbar/Types';
@@ -173,7 +174,8 @@ class Toolbar extends Component {
    * @returns {undefined}
    */
   componentDidMount() {
-    this.props.listActions(getBaseUrl(this.props.pathname));
+    !settings.minimizeNetworkFetch &&
+      this.props.listActions(getBaseUrl(this.props.pathname));
     this.props.getTypes(getBaseUrl(this.props.pathname));
     document.addEventListener('mousedown', this.handleClickOutside, false);
   }
@@ -186,7 +188,8 @@ class Toolbar extends Component {
    */
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.pathname !== this.props.pathname) {
-      this.props.listActions(getBaseUrl(nextProps.pathname));
+      !settings.minimizeNetworkFetch &&
+        this.props.listActions(getBaseUrl(nextProps.pathname));
       this.props.getTypes(getBaseUrl(nextProps.pathname));
     }
   }

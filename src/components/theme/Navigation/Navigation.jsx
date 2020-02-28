@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import { defineMessages, injectIntl } from 'react-intl';
 import { Menu } from 'semantic-ui-react';
 import cx from 'classnames';
+import { settings } from '~/config';
 import { getBaseUrl } from '@plone/volto/helpers';
 
 import { getNavigation } from '@plone/volto/actions';
@@ -70,7 +71,8 @@ class Navigation extends Component {
    * @returns {undefined}
    */
   UNSAFE_componentWillMount() {
-    this.props.getNavigation(getBaseUrl(this.props.pathname));
+    if (!settings.contentExpand.includes('navigation'))
+      this.props.getNavigation(getBaseUrl(this.props.pathname));
   }
 
   /**
@@ -80,7 +82,10 @@ class Navigation extends Component {
    * @returns {undefined}
    */
   UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.pathname !== this.props.pathname) {
+    if (
+      !settings.contentExpand.includes('navigation') &&
+      nextProps.pathname !== this.props.pathname
+    ) {
       this.props.getNavigation(getBaseUrl(nextProps.pathname));
     }
   }

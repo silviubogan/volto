@@ -36,6 +36,10 @@ export const settings = {
   // apiPath: process.env.RAZZLE_API_PATH || 'http://localhost:8081/db/web', // for guillotina
   internalApiPath: process.env.RAZZLE_INTERNAL_API_PATH || undefined,
   websockets: process.env.RAZZLE_WEBSOCKETS || false,
+  minimizeNetworkFetch: true,
+  // should also include ``types`` here, but it explicitely raises Unauthorized
+  // for anonymous in plone.restapi
+  contentExpand: ['breadcrumbs', 'actions', 'workflow'],
   nonContentRoutes,
   extendedBlockRenderMap,
   blockStyleFn,

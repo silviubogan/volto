@@ -120,6 +120,10 @@ export function getContent(
   subrequest = null,
   page = null,
 ) {
+  const expand =
+    !subrequest && settings.minimizeNetworkFetch
+      ? `&expand=${settings.contentExpand.join(',')}`
+      : '';
   const qs = page
     ? `?fullobjects&b_start=${settings.defaultPageSize * (page - 1)}&b_size=${
         settings.defaultPageSize
@@ -130,7 +134,7 @@ export function getContent(
     subrequest,
     request: {
       op: 'get',
-      path: `${url}${version ? `/@history/${version}` : ''}${qs}`,
+      path: `${url}${version ? `/@history/${version}` : ''}${qs}${expand}`,
     },
   };
 }

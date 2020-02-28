@@ -6,7 +6,7 @@
 import { map } from 'lodash';
 import { settings } from '~/config';
 
-import { GET_BREADCRUMBS } from '@plone/volto/constants/ActionTypes';
+import { GET_BREADCRUMBS, GET_CONTENT } from '@plone/volto/constants/ActionTypes';
 
 const initialState = {
   error: null,
@@ -31,6 +31,33 @@ export default function breadcrumbs(state = initialState, action = {}) {
         loaded: false,
         loading: true,
       };
+    case `${GET_CONTENT}_PENDING`:
+      return !action.subrequest && settings.minimizeNetworkFetch
+        ? {
+            ...state,
+            error: null,
+            loaded: false,
+            loading: true,
+          }
+        : state;
+    case `${GET_BREADCRUMBS}_FAIL`:
+      return {
+        ...state,
+        error: action.error,
+        items: [],
+        loaded: false,
+        loading: false,
+      };
+    case `${GET_CONTENT}_FAIL`:
+      return !action.subrequest && settings.minimizeNetworkFetch
+        ? {
+            ...state,
+            error: action.error,
+            items: [],
+            loaded: false,
+            loading: false,
+          }
+        : state;
     case `${GET_BREADCRUMBS}_SUCCESS`:
       return {
         ...state,
@@ -42,14 +69,22 @@ export default function breadcrumbs(state = initialState, action = {}) {
         loaded: true,
         loading: false,
       };
-    case `${GET_BREADCRUMBS}_FAIL`:
-      return {
-        ...state,
-        error: action.error,
-        items: [],
-        loaded: false,
-        loading: false,
-      };
+    case `${GET_CONTENT}_SUCCESS`:
+      return !action.subrequest && settings.minimizeNetworkFetch
+        ? {
+            ...state,
+            error: null,
+            items: map(
+              action.result['@components'].breadcrumbs.items,
+              item => ({
+                title: item.title,
+                url: item['@id'].replace(settings.apiPath, ''),
+              }),
+            ),
+            loaded: true,
+            loading: false,
+          }
+        : state;
     default:
       return state;
   }

@@ -3,7 +3,8 @@
  * @module reducers/actions/actions
  */
 
-import { LIST_ACTIONS } from '@plone/volto/constants/ActionTypes';
+import { settings } from '~/config';
+import { LIST_ACTIONS, GET_CONTENT } from '@plone/volto/constants/ActionTypes';
 
 const initialState = {
   error: null,
@@ -35,6 +36,15 @@ export default function actions(state = initialState, action = {}) {
         loaded: false,
         loading: true,
       };
+    case `${GET_CONTENT}_PENDING`:
+      return !action.subrequest && settings.minimizeNetworkFetch
+        ? {
+            ...state,
+            error: null,
+            loaded: false,
+            loading: true,
+          }
+        : state;
     case `${LIST_ACTIONS}_SUCCESS`:
       return {
         ...state,
@@ -43,6 +53,16 @@ export default function actions(state = initialState, action = {}) {
         loaded: true,
         loading: false,
       };
+    case `${GET_CONTENT}_SUCCESS`:
+      return !action.subrequest && settings.minimizeNetworkFetch
+        ? {
+            ...state,
+            error: null,
+            actions: action.result['@components'].actions,
+            loaded: true,
+            loading: false,
+          }
+        : state;
     case `${LIST_ACTIONS}_FAIL`:
       return {
         ...state,
@@ -51,6 +71,16 @@ export default function actions(state = initialState, action = {}) {
         loaded: false,
         loading: false,
       };
+    case `${GET_CONTENT}_FAIL`:
+      return !action.subrequest && settings.minimizeNetworkFetch
+        ? {
+            ...state,
+            error: action.error,
+            actions: {},
+            loaded: false,
+            loading: false,
+          }
+        : state;
     default:
       return state;
   }

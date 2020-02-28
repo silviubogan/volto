@@ -7,7 +7,9 @@ import {
   TRANSITION_WORKFLOW,
   GET_WORKFLOW,
   GET_WORKFLOW_MULTIPLE,
+  GET_CONTENT,
 } from '@plone/volto/constants/ActionTypes';
+import { settings } from '~/config';
 
 const initialState = {
   get: {
@@ -55,6 +57,17 @@ export default function content(state = initialState, action = {}) {
           error: null,
         },
       };
+    case `${GET_CONTENT}_PENDING`:
+      return !action.subrequest && settings.minimizeNetworkFetch
+        ? {
+            ...state,
+            [getRequestKey(action.type)]: {
+              loading: true,
+              loaded: false,
+              error: null,
+            },
+          }
+        : state;
     case `${GET_WORKFLOW}_SUCCESS`:
     case `${TRANSITION_WORKFLOW}_SUCCESS`:
       return {
@@ -69,6 +82,23 @@ export default function content(state = initialState, action = {}) {
           error: null,
         },
       };
+    case `${GET_CONTENT}_SUCCESS`:
+      return !action.subrequest && settings.minimizeNetworkFetch
+        ? {
+            ...state,
+            history: action.result['@components']?.workflow?.history
+              ? action.result['@components'].workflow.history
+              : state.history,
+            transitions: action.result['@components']?.workflow?.transitions
+              ? action.result['@components']?.workflow?.transitions
+              : state.transitions,
+            [getRequestKey(action.type)]: {
+              loading: false,
+              loaded: true,
+              error: null,
+            },
+          }
+        : state;
     case `${GET_WORKFLOW_MULTIPLE}_SUCCESS`:
       return {
         ...state,
@@ -91,6 +121,19 @@ export default function content(state = initialState, action = {}) {
           error: action.error,
         },
       };
+    case `${GET_CONTENT}_FAIL`:
+      return !action.subrequest && settings.minimizeNetworkFetch
+        ? {
+            ...state,
+            history: [],
+            transitions: [],
+            [getRequestKey(action.type)]: {
+              loading: false,
+              loaded: false,
+              error: action.error,
+            },
+          }
+        : state;
     case `${GET_WORKFLOW_MULTIPLE}_FAIL`:
       return {
         ...state,

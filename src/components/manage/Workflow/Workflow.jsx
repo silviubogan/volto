@@ -204,7 +204,8 @@ class Workflow extends Component {
    * @returns {undefined}
    */
   UNSAFE_componentWillMount() {
-    this.props.getWorkflow(this.props.pathname);
+    if (!settings.minimizeNetworkFetch)
+      this.props.getWorkflow(this.props.pathname);
   }
 
   /**
@@ -214,10 +215,17 @@ class Workflow extends Component {
    * @returns {undefined}
    */
   UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.pathname !== this.props.pathname) {
+    if (
+      !settings.minimizeNetworkFetch &&
+      nextProps.pathname !== this.props.pathname
+    ) {
       this.props.getWorkflow(nextProps.pathname);
     }
-    if (!this.props.loaded && nextProps.loaded) {
+    if (
+      !settings.minimizeNetworkFetch &&
+      !this.props.loaded &&
+      nextProps.loaded
+    ) {
       this.props.getWorkflow(nextProps.pathname);
       this.props.getContent(nextProps.pathname);
     }

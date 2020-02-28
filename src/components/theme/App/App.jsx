@@ -16,6 +16,7 @@ import split from 'lodash/split';
 import join from 'lodash/join';
 import trim from 'lodash/trim';
 import cx from 'classnames';
+import { settings } from '~/config';
 
 import Error from '@plone/volto/error';
 
@@ -179,7 +180,9 @@ export default compose(
     {
       key: 'breadcrumbs',
       promise: ({ location, store: { dispatch } }) => {
-        __SERVER__ && dispatch(getBreadcrumbs(getBaseUrl(location.pathname)));
+        __SERVER__ &&
+          !settings.minimizeNetworkFetch &&
+          dispatch(getBreadcrumbs(getBaseUrl(location.pathname)));
       },
     },
     {
@@ -190,7 +193,9 @@ export default compose(
     {
       key: 'navigation',
       promise: ({ location, store: { dispatch } }) =>
-        __SERVER__ && dispatch(getNavigation(getBaseUrl(location.pathname))),
+        __SERVER__ &&
+        !settings.contentExpand.includes('navigation') &&
+        dispatch(getNavigation(getBaseUrl(location.pathname))),
     },
     {
       key: 'types',
@@ -200,7 +205,9 @@ export default compose(
     {
       key: 'workflow',
       promise: ({ location, store: { dispatch } }) =>
-        __SERVER__ && dispatch(getWorkflow(getBaseUrl(location.pathname))),
+        __SERVER__ &&
+        !settings.minimizeNetworkFetch &&
+        dispatch(getWorkflow(getBaseUrl(location.pathname))),
     },
   ]),
   connect(
