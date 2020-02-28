@@ -8,8 +8,8 @@ git remote add tiberiuichim https://github.com/tiberiuichim/volto.git
 git fetch --all
 git pull
 git merge volto/export_components
-git merge tiberiuichim/sync_update
-git merge tiberiuichim/navigation-refactoring
+git merge origin/sync_update
+git merge origin/navigation-refactoring
 git merge volto/master
 
 
