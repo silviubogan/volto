@@ -3,7 +3,7 @@
 set -x
 
 git remote add volto https://github.com/plone/volto.git
-git remote add tiberiuichim https://github.com/tiberiuichim/volto.git
+#git remote add tiberiuichim https://github.com/tiberiuichim/volto.git
 
 git fetch --all
 git pull
