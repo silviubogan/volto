@@ -5,15 +5,15 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { isMatch } from 'lodash';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { defineMessages, injectIntl } from 'react-intl';
 import { Menu } from 'semantic-ui-react';
 import cx from 'classnames';
 import { settings } from '~/config';
 import { getBaseUrl } from '@plone/volto/helpers';
+import { settings } from '~/config';
 
 import { getNavigation } from '@plone/volto/actions';
 
@@ -48,6 +48,7 @@ class Navigation extends Component {
         url: PropTypes.string,
       }),
     ).isRequired,
+    lang: PropTypes.string.isRequired,
   };
 
   /**
@@ -91,19 +92,6 @@ class Navigation extends Component {
   }
 
   /**
-   * Check if menu is active
-   * @method isActive
-   * @param {string} url Url of the navigation item.
-   * @returns {bool} Is menu active?
-   */
-  isActive(url) {
-    return (
-      (url === '' && this.props.pathname === '/') ||
-      (url !== '' && isMatch(this.props.pathname.split('/'), url.split('/')))
-    );
-  }
-
-  /**
    * Toggle mobile menu's open state
    * @method toggleMobileMenu
    * @returns {undefined}
@@ -130,6 +118,8 @@ class Navigation extends Component {
    * @returns {string} Markup for the component.
    */
   render() {
+    const { lang } = this.props;
+
     return (
       <nav className="navigation">
         <div className="hamburger-wrapper mobile tablet only">
@@ -175,13 +165,19 @@ class Navigation extends Component {
           onClick={this.closeMobileMenu}
         >
           {this.props.items.map(item => (
-            <Link
+            <NavLink
               to={item.url === '' ? '/' : item.url}
               key={item.url}
-              className={this.isActive(item.url) ? 'item active' : 'item'}
+              className="item"
+              activeClassName="active"
+              exact={
+                settings.isMultilingual
+                  ? item.url === `/${lang}`
+                  : item.url === ''
+              }
             >
               {item.title}
-            </Link>
+            </NavLink>
           ))}
         </Menu>
       </nav>
@@ -194,6 +190,7 @@ export default compose(
   connect(
     state => ({
       items: state.navigation.items,
+      lang: state.intl.locale,
     }),
     { getNavigation },
   ),

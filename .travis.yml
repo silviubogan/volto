@@ -39,7 +39,8 @@ before_install:
   - npm install -g surge
 install:
   - if [ "$TEST_SUITE" == "plone" ]; then
-    make build-backend;
+    (cd api && pip install -r requirements.txt) &&
+    (cd api && buildout)
     fi
   - yarn install --frozen-lockfile
   - yarn cy:install
@@ -57,10 +58,11 @@ script:
     yarn ci:cypress:run;
     fi
 after_script:
-- mkdir cypress-results
-- mv cypress/videos/* cypress-results
-- ls -al cypress-results
-- surge cypress-results volto.surge.sh
+  - mkdir cypress-results
+  - mv cypress/videos cypress-results
+  - ls -al cypress-results
+  - surge cypress-results volto.surge.sh
+  - echo "Cypress Videos uploaded to http://volto.surge.sh/videos/blocks.js.mp4"
 after_success:
   - if [ "$TEST_SUITE" == "plone" ]; then
     yarn run bundlewatch;

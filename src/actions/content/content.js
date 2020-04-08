@@ -124,11 +124,16 @@ export function getContent(
     !subrequest && settings.minimizeNetworkFetch
       ? `&expand=${settings.contentExpand.join(',')}`
       : '';
-  const qs = page
+  let qs = page
     ? `?fullobjects&b_start=${settings.defaultPageSize * (page - 1)}&b_size=${
         settings.defaultPageSize
       }`
     : '?fullobjects';
+
+  if (settings.isMultilingual) {
+    qs = qs + '&expand=translations';
+  }
+
   return {
     type: GET_CONTENT,
     subrequest,

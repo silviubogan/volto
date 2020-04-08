@@ -14,6 +14,7 @@ const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const fs = require('fs');
 const { map } = require('lodash');
 const glob = require('glob').sync;
+const RootResolverPlugin = require('./webpack-root-resolver');
 
 const fileLoaderFinder = makeLoaderFinder('file-loader');
 const eslintLoaderFinder = makeLoaderFinder('eslint-loader');
@@ -119,6 +120,12 @@ module.exports = {
       config.plugins.unshift(
         new webpack.DefinePlugin({
           __DEVELOPMENT__: true,
+        }),
+      );
+    } else {
+      config.plugins.unshift(
+        new webpack.DefinePlugin({
+          __DEVELOPMENT__: false,
         }),
       );
     }
@@ -229,6 +236,8 @@ module.exports = {
         },
       );
     });
+
+    config.resolve.plugins = [new RootResolverPlugin()];
 
     config.resolve.alias = {
       ...customizations,
