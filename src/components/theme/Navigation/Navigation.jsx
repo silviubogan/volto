@@ -11,7 +11,6 @@ import { NavLink } from 'react-router-dom';
 import { defineMessages, injectIntl } from 'react-intl';
 import { Menu } from 'semantic-ui-react';
 import cx from 'classnames';
-import { settings } from '~/config';
 import { getBaseUrl } from '@plone/volto/helpers';
 import { settings } from '~/config';
 
