@@ -9,6 +9,8 @@
 ### Changes
 ### Feature
 
+- Full screen right sidebar @rexalex #1345
+
 ### Bugfix
 
 ### Internal
