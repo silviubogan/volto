@@ -10,7 +10,6 @@
 ### Feature
 
 - Full screen right sidebar @rexalex #1345
-
 - Added basic lazy loading dependencies and boilerplate @sneridagh
 
 ### Bugfix
