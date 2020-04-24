@@ -11,8 +11,8 @@ git merge volto/export_components
 git merge origin/sync_update
 git merge origin/navigation-refactoring
 git merge origin/eea-default-blocks
-git merge origin/eea-fullscreen-sidebar
 git merge volto/master
+git merge volto/eea-controlpanel-dx
 
 
 # To come:
