@@ -1,21 +1,20 @@
 /**
- * Controlpanel component.
- * @module components/manage/Controlpanels/Controlpanel
+ * Content Type component.
+ * @module components/manage/Controlpanels/ContentType
  */
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { withRouter } from 'react-router-dom';
-import { Helmet } from '@plone/volto/helpers';
+import { Helmet, getParentUrl } from '@plone/volto/helpers';
 import { Portal } from 'react-portal';
-import { Button, Container } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 import { defineMessages, injectIntl } from 'react-intl';
 import { toast } from 'react-toastify';
-
+import { last, nth, join } from 'lodash';
 import { Form, Icon, Toolbar, Toast } from '@plone/volto/components';
-import { updateControlpanel, getControlpanel } from '@plone/volto/actions';
+import { getControlpanel, updateControlpanel } from '@plone/volto/actions';
 
 import saveSVG from '@plone/volto/icons/save.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';
@@ -44,11 +43,11 @@ const messages = defineMessages({
 });
 
 /**
- * Controlpanel class.
- * @class Controlpanel
+ * ContentType class.
+ * @class ContentType
  * @extends Component
  */
-class Controlpanel extends Component {
+class ContentType extends Component {
   /**
    * Property types.
    * @property {Object} propTypes Property types.
@@ -58,6 +57,7 @@ class Controlpanel extends Component {
     updateControlpanel: PropTypes.func.isRequired,
     getControlpanel: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired,
+    parent: PropTypes.string.isRequired,
     updateRequest: PropTypes.shape({
       loading: PropTypes.bool,
       loaded: PropTypes.bool,
@@ -84,12 +84,16 @@ class Controlpanel extends Component {
    * Constructor
    * @method constructor
    * @param {Object} props Component properties
-   * @constructs Controlpanel
+   * @constructs ContentType
    */
   constructor(props) {
     super(props);
+    this.state = {
+      visual: false,
+    };
     this.onCancel = this.onCancel.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.form = React.createRef();
   }
 
   /**
@@ -98,7 +102,7 @@ class Controlpanel extends Component {
    * @returns {undefined}
    */
   UNSAFE_componentWillMount() {
-    this.props.getControlpanel(this.props.id);
+    this.props.getControlpanel(join([this.props.parent, this.props.id], '/'));
   }
 
   /**
@@ -135,9 +139,8 @@ class Controlpanel extends Component {
    * @returns {undefined}
    */
   onCancel() {
-    this.props.history.goBack();
+    this.props.history.push(getParentUrl(this.props.pathname));
   }
-  form = React.createRef();
 
   /**
    * Render method.
@@ -149,18 +152,19 @@ class Controlpanel extends Component {
       return (
         <div id="page-controlpanel">
           <Helmet title={this.props.controlpanel.title} />
-          <Container>
-            <Form
-              ref={this.form}
-              title={this.props.controlpanel.title}
-              schema={this.props.controlpanel.schema}
-              formData={this.props.controlpanel.data}
-              onSubmit={this.onSubmit}
-              onCancel={this.onCancel}
-              hideActions
-              loading={this.props.updateRequest.loading}
-            />
-          </Container>
+          <Form
+            isEditForm
+            ref={this.form}
+            title={this.props.controlpanel.title}
+            schema={this.props.controlpanel.schema}
+            formData={this.props.controlpanel.data}
+            onSubmit={this.onSubmit}
+            onCancel={this.onCancel}
+            pathname={this.props.pathname}
+            visual={this.state.visual}
+            hideActions
+            loading={this.props.updateRequest.loading}
+          />
           <Portal node={__CLIENT__ && document.getElementById('toolbar')}>
             <Toolbar
               pathname={this.props.pathname}
@@ -211,10 +215,10 @@ export default compose(
     (state, props) => ({
       controlpanel: state.controlpanels.controlpanel,
       updateRequest: state.controlpanels.update,
-      id: props.match.params.id,
       pathname: props.location.pathname,
+      id: last(props.location.pathname.split('/')),
+      parent: nth(props.location.pathname.split('/'), -2),
     }),
-    { updateControlpanel, getControlpanel },
+    { getControlpanel, updateControlpanel },
   ),
-  withRouter,
-)(Controlpanel);
+)(ContentType);
