@@ -26,6 +26,9 @@ $ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh |
 $ source ~/.bash_profile
 ```
 
+If you're using the fish shell, you should install the
+[nvm fish integration plugin](https://github.com/jorgebucaran/fish-nvm).
+
 3. Test it:
 ```
 $ nvm version
