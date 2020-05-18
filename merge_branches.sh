@@ -12,8 +12,6 @@ git merge origin/sync_update
 git merge origin/navigation-refactoring
 git merge origin/eea-default-blocks
 git merge volto/master
-git merge volto/eea-controlpanel-dx
-
 
 # To come:
 
@@ -27,3 +25,4 @@ git merge volto/eea-controlpanel-dx
 # git merge volto/fix_querystring_missing_value
 # git merge volto/fix_querystring_child_warning
 # git merge tiberiuichim/navigation-refactoring
+# git merge volto/eea-controlpanel-dx
