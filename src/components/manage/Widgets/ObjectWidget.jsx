@@ -1,5 +1,6 @@
 import React from 'react';
-import { Field, Tab } from 'semantic-ui-react';
+import { Tab } from 'semantic-ui-react';
+import Field from '../Form/Field';
 import PropTypes from 'prop-types';
 
 const ObjectWidget = ({
