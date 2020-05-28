@@ -19,7 +19,6 @@ const ObjectWidget = ({
             {...schema.properties[field]}
             id={field}
             fieldset={fieldset.title.toLowerCase()}
-            focus={index === 0}
             value={value?.[field]}
             required={schema.required.indexOf(field) !== -1}
             onChange={(field, fieldvalue) => {
@@ -27,6 +26,7 @@ const ObjectWidget = ({
             }}
             key={field}
             error={errors[field]}
+            title={schema.properties[field].title}
           />
         );
       });
