@@ -1,0 +1,122 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders an object list widget component 1`] = `
+<div
+  className="inline required field help text"
+  id="[object Object]-my-widget"
+>
+  <div
+    className="ui grid"
+  >
+    <div
+      className="stretched row"
+    >
+      <div
+        className="four wide column"
+      >
+        <div
+          className="wrapper"
+        >
+          <label
+            htmlFor="field-my-widget"
+          >
+            <i
+              aria-hidden="true"
+              className="grey bars icon drag handle"
+            />
+            My Widget
+          </label>
+        </div>
+      </div>
+      <div
+        className="eight wide column"
+      >
+        <div
+          className="toolbar"
+        >
+          <button
+            className="item ui noborder button"
+            onClick={[Function]}
+          >
+            <i
+              aria-hidden="true"
+              className="blue write square large icon"
+              onClick={[Function]}
+            />
+          </button>
+          <button
+            aria-label="Delete"
+            className="item ui noborder button"
+            onClick={[Function]}
+          >
+            <i
+              aria-hidden="true"
+              className="red close large icon"
+              onClick={[Function]}
+            />
+          </button>
+        </div>
+        <div
+          className="ui disabled icon input"
+        >
+          <input
+            disabled={true}
+            id="field-my-widget"
+            name="my-widget"
+            onChange={[Function]}
+            tabIndex={-1}
+            type="text"
+            value="A collection of 2 items"
+          />
+          <i
+            aria-hidden="true"
+            attributes={
+              Object {
+                "viewBox": "",
+                "xmlns": "",
+              }
+            }
+            className="icon"
+            onClick={[Function]}
+          />
+        </div>
+        <button
+          onClick={[Function]}
+        >
+          <svg
+            className="icon"
+            dangerouslySetInnerHTML={
+              Object {
+                "__html": undefined,
+              }
+            }
+            onClick={null}
+            style={
+              Object {
+                "fill": "currentColor",
+                "height": "18px",
+                "width": "auto",
+              }
+            }
+            viewBox=""
+            xmlns=""
+          />
+        </button>
+      </div>
+    </div>
+    <div
+      className="stretched row"
+    >
+      <div
+        className="stretched twelve wide column"
+      >
+        <p
+          className="help"
+        >
+          My description
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;

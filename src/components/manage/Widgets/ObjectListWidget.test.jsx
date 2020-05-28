@@ -2,11 +2,11 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import configureStore from 'redux-mock-store';
 import { Provider } from 'react-intl-redux';
-import ObjectWidget from './ObjectWidget';
+import ObjectListWidget from './ObjectListWidget';
 
 const mockStore = configureStore();
 
-test('renders an object widget component', () => {
+test('renders an object list widget component', () => {
   const LinkSchema = {
     title: 'Link',
     fieldsets: [
@@ -53,13 +53,18 @@ test('renders an object widget component', () => {
   });
   const component = renderer.create(
     <Provider store={store}>
-      <ObjectWidget
+      <ObjectListWidget
         id="my-widget"
         schema={LinkSchema}
-        value={{}}
         title="My Widget"
         onChange={() => {}}
-        errors={{}}
+        error={{}}
+        value={['abc', 'def']}
+        required={true}
+        fieldSet={{}}
+        description="My description"
+        onDelete={() => {}}
+        onEdit={() => {}}
       />
     </Provider>,
   );
