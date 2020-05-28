@@ -20,6 +20,26 @@ import addSVG from '@plone/volto/icons/add.svg';
 import ObjectWidget from './ObjectWidget';
 
 export const FlatObjectList = ({ id, value = [], schema, onChange }) => {
+  // fi - changed field's index
+  // fv - changed field's value
+  const doChange = (index) => (fi, fv) =>
+    onChange(
+      id, // the id of the FlatObjectList
+      // v - the current value
+      // i - the current index
+      //
+      // for each value, if not changed, leave it as it is,
+      // otherwise add to it (it being an object)
+      // the fi property with the value fv
+      value.map((v, i) => (i !== index ? v : { ...v, [fi]: fv })),
+    );
+
+  const doDelete = (index) => () =>
+    onChange(
+      id,
+      value.filter((v, i) => i !== index),
+    );
+
   return (
     <div className="objectlist-widget-content">
       {!value && <ObjectWidget schema={schema} />}
@@ -33,30 +53,13 @@ export const FlatObjectList = ({ id, value = [], schema, onChange }) => {
                   key={index}
                   schema={schema}
                   value={obj}
-                  onChange={(fi, fv) =>
-                    onChange(
-                      id,
-                      value.map((v, i) =>
-                        i !== index ? v : { ...v, [fi]: fv },
-                      ),
-                    )
-                  }
+                  onChange={doChange(index)}
                 />
               </Segment>
             </Grid.Column>
             <Grid.Column width={1}>
               <Button.Group>
-                <Button
-                  basic
-                  circular
-                  size="mini"
-                  onClick={() =>
-                    onChange(
-                      id,
-                      value.filter((v, i) => i !== index),
-                    )
-                  }
-                >
+                <Button basic circular size="mini" onClick={doDelete(index)}>
                   {/* TODO: instead of px use rem if possible */}
                   <VoltoIcon size="20px" name={deleteSVG} />
                 </Button>
@@ -69,6 +72,8 @@ export const FlatObjectList = ({ id, value = [], schema, onChange }) => {
   );
 };
 
+// TODO: make the ObjectWidget and ObjectListWidget (at least keyboard) accessible
+// and use translations where needed
 export const ModalObjectListForm = (props) => {
   const {
     open,
@@ -77,13 +82,22 @@ export const ModalObjectListForm = (props) => {
     onSave,
     onCancel,
     schema,
-    id,
     value = [],
   } = props;
 
   const empty = {};
 
   const [stateValue, setStateValue] = useState(value);
+
+  const doSave = (id, stateValue) => {
+    onSave(id, stateValue);
+    setStateValue([]);
+  };
+
+  const doCancel = (...args) => {
+    onCancel(...args);
+    setStateValue([]);
+  };
 
   return (
     <Modal open={open} className={className}>
@@ -119,7 +133,7 @@ export const ModalObjectListForm = (props) => {
           aria-label="Save"
           title="Save"
           size="big"
-          onClick={() => onSave(id, stateValue)}
+          onClick={doSave}
         />
         <Button
           basic
@@ -130,7 +144,7 @@ export const ModalObjectListForm = (props) => {
           title="Cancel"
           floated="right"
           size="big"
-          onClick={onCancel}
+          onClick={doCancel}
         />
       </Modal.Actions>
     </Modal>
@@ -138,7 +152,6 @@ export const ModalObjectListForm = (props) => {
 };
 
 const ObjectListWidget = (props) => {
-  const [open, setOpen] = useState(false);
   const {
     id,
     value = [],
@@ -152,6 +165,7 @@ const ObjectListWidget = (props) => {
     onDelete,
     onEdit,
   } = props;
+  const [open, setOpen] = useState(false);
 
   return (
     <>
@@ -159,8 +173,8 @@ const ObjectListWidget = (props) => {
         {...props}
         open={open}
         onSave={(id, value) => {
-          setOpen(false);
           onChange(id, value);
+          setOpen(false);
         }}
         onCancel={() => setOpen(false)}
       />
