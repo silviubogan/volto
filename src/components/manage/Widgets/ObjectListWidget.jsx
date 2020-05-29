@@ -50,10 +50,12 @@ export const FlatObjectList = ({ id, value = [], schema, onChange }) => {
             <Grid.Column width={11}>
               <Segment>
                 <ObjectWidget
+                  id={index}
                   key={index}
                   schema={schema}
                   value={obj}
                   onChange={doChange(index)}
+                  errors={{}}
                 />
               </Segment>
             </Grid.Column>
@@ -72,8 +74,14 @@ export const FlatObjectList = ({ id, value = [], schema, onChange }) => {
   );
 };
 
+// TODO: in the current position of the manual test for the ObjectListWidget, inside Form.jsx, the CSS makes the pen-shaped button impossible to be clicked, and when I click it after a change to the DOM in DevTools, a page refresh is triggered
+// TODO: on Add button press, scroll contents to bottom
+// TODO: count shown outside the Form is not updated
+// TODO: cancel button works or saves?
+// TODO: delete item button works or deletes even if not saved?
 // TODO: make the ObjectWidget and ObjectListWidget (at least keyboard) accessible
 // and use translations where needed
+
 export const ModalObjectListForm = (props) => {
   const {
     open,
@@ -83,20 +91,27 @@ export const ModalObjectListForm = (props) => {
     onCancel,
     schema,
     value = [],
+    id,
   } = props;
 
-  const empty = {};
+  function createEmpty() {
+    return {};
+  }
 
   const [stateValue, setStateValue] = useState(value);
 
-  const doSave = (id, stateValue) => {
+  function resetForm() {
+    setStateValue([createEmpty()]);
+  }
+
+  const doSave = () => {
     onSave(id, stateValue);
-    setStateValue([]);
+    // resetForm();
   };
 
   const doCancel = (...args) => {
     onCancel(...args);
-    setStateValue([]);
+    resetForm();
   };
 
   return (
@@ -104,8 +119,8 @@ export const ModalObjectListForm = (props) => {
       <Header>{title}</Header>
       <Modal.Content scrolling>
         <FlatObjectList
-          {...props}
           value={stateValue}
+          schema={schema}
           onChange={(id, v) => setStateValue(v)}
         />
       </Modal.Content>
@@ -117,10 +132,12 @@ export const ModalObjectListForm = (props) => {
           floated="left"
           size="big"
           className="icon"
-          onClick={() => setStateValue([...stateValue, empty])}
+          onClick={() => {
+            setStateValue([...stateValue, createEmpty()]);
+          }}
         >
           {/* TODO: instead of px use rem if possible */}
-          <VoltoIcon size="20px" name={addSVG} />
+          <VoltoIcon size="18px" name={addSVG} />
           Add {schema.title}
         </Button>
 
@@ -154,7 +171,7 @@ export const ModalObjectListForm = (props) => {
 const ObjectListWidget = (props) => {
   const {
     id,
-    value = [],
+    initialValue = [],
     schema,
     onChange,
     required,
@@ -167,16 +184,28 @@ const ObjectListWidget = (props) => {
   } = props;
   const [open, setOpen] = useState(false);
 
+  const [currentValue, setCurrentValue] = useState(initialValue);
+
+  function handleCancel() {
+    setOpen(false);
+  }
+
   return (
     <>
       <ModalObjectListForm
-        {...props}
+        id={id}
+        schema={schema}
         open={open}
         onSave={(id, value) => {
+          // gets here with success
+          //console.log('ON SAVE', { id, value });
+          setCurrentValue(JSON.parse(JSON.stringify(value)));
           onChange(id, value);
+          console.log('ON SAVE value = ', value);
           setOpen(false);
         }}
-        onCancel={() => setOpen(false)}
+        onCancel={handleCancel}
+        value={currentValue}
       />
       <Form.Field
         inline
@@ -224,9 +253,15 @@ const ObjectListWidget = (props) => {
                 name={id}
                 disabled={true}
                 icon={penSVG}
-                value={`A collection of ${value.length} items`}
+                value={`A collection of ${currentValue.length} items`}
               />
-              <button onClick={() => setOpen(true)}>
+              <button
+                onClick={() => {
+                  console.log('on Pen click value = ', initialValue);
+                  setCurrentValue(JSON.parse(JSON.stringify(initialValue)));
+                  setOpen(true);
+                }}
+              >
                 {/* TODO: instead of px use rem if possible */}
                 <VoltoIcon name={penSVG} size="18px" />
               </button>

@@ -59,7 +59,10 @@ test('renders an object list widget component', () => {
         title="My Widget"
         onChange={() => {}}
         error={{}}
-        value={['abc', 'def']}
+        value={[
+          { external_link: 'https://dgg.gg' },
+          { external_link: 'https://wikipedia.org' },
+        ]}
         required={true}
         fieldSet={{}}
         description="My description"
