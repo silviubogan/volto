@@ -30,7 +30,12 @@ import { defineMessages, injectIntl } from 'react-intl';
 import { v4 as uuid } from 'uuid';
 import { Portal } from 'react-portal';
 
-import { EditBlock, Icon, Field } from '@plone/volto/components';
+import {
+  EditBlock,
+  Icon,
+  Field,
+  ObjectListWidget,
+} from '@plone/volto/components';
 import dragSVG from '@plone/volto/icons/drag.svg';
 
 import {
@@ -77,6 +82,44 @@ const messages = defineMessages({
     defaultMessage: 'There were some errors.',
   },
 });
+
+const LinkSchema = {
+  title: 'Link',
+  fieldsets: [
+    {
+      id: 'internal',
+      title: 'Internal',
+      fields: ['internal_link'],
+    },
+    {
+      id: 'external',
+      title: 'External',
+      fields: ['external_link'],
+    },
+    {
+      id: 'email',
+      title: 'Email',
+      fields: ['email_address', 'email_subject'],
+    },
+  ],
+  properties: {
+    internal_link: {
+      widget: 'object_browser',
+      title: 'Internal link',
+    },
+    external_link: {
+      title:
+        'External URL (can be relative within this site or absolute if it starts with http:// or https://)',
+    },
+    email_address: {
+      title: 'Email address',
+    },
+    email_subject: {
+      title: 'Email subject (optional)',
+    },
+  },
+  required: [],
+};
 
 /**
  * Form container class.
@@ -712,6 +755,8 @@ class Form extends Component {
     const blocksDict = formData?.[blocksFieldname];
     const schema = this.removeBlocksLayoutFields(originalSchema);
 
+    console.dir('formData', formData);
+
     return this.props.visual ? (
       // Removing this from SSR is important, since react-beautiful-dnd supports SSR,
       // but draftJS don't like it much and the hydration gets messed up
@@ -803,6 +848,24 @@ class Form extends Component {
                 onSubmit={this.onSubmit}
                 error={keys(this.state.errors).length > 0}
               >
+                <Segment>
+                  <ObjectListWidget
+                    id={`my-widget`}
+                    schema={LinkSchema}
+                    title="My Widget"
+                    onChange={this.onChangeField}
+                    error={{}}
+                    initialValue={[
+                      { external_link: 'https://ddg.gg' },
+                      { external_link: 'https://wikipedia.org' },
+                    ]}
+                    required={true}
+                    fieldSet={{}}
+                    description="My description"
+                    onDelete={() => {}}
+                    onEdit={() => {}}
+                  />
+                </Segment>
                 {schema &&
                   map(schema.fieldsets, (item) => [
                     <Segment secondary attached key={item.title}>
