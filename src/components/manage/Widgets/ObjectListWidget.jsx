@@ -10,7 +10,7 @@ import {
   Modal,
   Segment,
 } from 'semantic-ui-react';
-import React, { Fragment, useState, useCallback } from 'react';
+import React, { Fragment, useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Icon as VoltoIcon } from '@plone/volto/components';
 import deleteSVG from '@plone/volto/icons/delete.svg';
@@ -112,20 +112,24 @@ export const ModalObjectListForm = (props) => {
     return {};
   }
 
-  const [stateValue, setStateValue] = useState(value);
+  const [stateValue, setStateValue] = useState([...value]);
 
   // function resetForm() {
   //   setStateValue([createEmpty()]);
   // }
 
+  useEffect(() => {
+    setStateValue([...value]);
+  }, [value]);
+
   const doSave = useCallback(() => {
     onSave(id, stateValue);
-    setStateValue(value);
+    //setStateValue([...value]);
   }, [onSave, id, stateValue, value]);
 
   const doCancel = useCallback(() => {
     onCancel();
-    setStateValue(value);
+    //setStateValue([...value]);
   }, [onCancel, value]);
 
   return (
@@ -136,8 +140,17 @@ export const ModalObjectListForm = (props) => {
           value={stateValue}
           schema={schema}
           onChange={(id, v) => {
-            console.log('FlatObjectList onChange => setStateValue( ', v, ' )');
-            setStateValue(v);
+            // console.log('FlatObjectList onChange => setStateValue( ', v, ' )');
+            // console.log('v', JSON.stringify(v, null, 3));
+            console.log('stateValue in ModalObjectListForm: ', stateValue);
+            console.log('v in ModalObjectListForm: ', v);
+
+            setStateValue([...v]);
+
+            console.log(
+              'stateValue in ModalObjectListForm after setting it: ',
+              stateValue,
+            );
           }}
         />
       </Modal.Content>
@@ -201,25 +214,45 @@ const ObjectListWidget = (props) => {
   } = props;
 
   const [open, setOpen] = useState(false);
-  const [currentValue, setCurrentValue] = useState(value);
+  const [currentValue, setCurrentValue] = useState([...value]);
+
+  useEffect(() => {
+    setOpen(false);
+    console.log(
+      'ObjectListWidget before onChange currentValue = ',
+      currentValue,
+    );
+    onChange(id, currentValue);
+    console.log(
+      'ObjectListWidget after onChange currentValue = ',
+      currentValue,
+    );
+    // console.log('ON SAVE value = ', val);
+    // console.log('ON SAVE currentValue = ', currentValue);
+
+    // return () => {
+    //   cleanup
+    // }
+  }, [currentValue]);
 
   const handleCancel = useCallback(() => {
     setOpen(false);
   });
 
   const handleSave = useCallback(
-    (id, value) => {
+    (id, val) => {
       // gets here with success
       //console.log('ON SAVE', { id, value });
       // setCurrentValue(JSON.parse(JSON.stringify(value)));
-      setCurrentValue(JSON.parse(JSON.stringify(value)));
-      onChange(id, value);
-      console.log('ON SAVE value = ', value);
-      console.log('ON SAVE currentValue = ', currentValue);
-      setOpen(false);
+      // console.log('current value before set', currentValue);
+      // setCurrentValue(JSON.parse(JSON.stringify(val)));
+      setCurrentValue([...val]);
+      // console.log('current value after set', currentValue);
     },
-    [onChange],
+    [currentValue],
   );
+
+  console.log('render of ObjectListWidget, ', currentValue);
 
   return (
     <>

@@ -855,9 +855,20 @@ class Form extends Component {
                     id={`my-widget`}
                     schema={LinkSchema}
                     title="My Widget"
-                    onChange={(id, v) => this.setState(() => ({ testData: v }))}
+                    onChange={(id, v) => {
+                      this.setState(
+                        () => ({ testData: v }),
+                        () => {
+                          console.log(
+                            'this.state.testData : ',
+                            this.state.testData,
+                          );
+                          // here is well... from here to 'rendering FlatObjectList ...' this is where the issue is
+                        },
+                      );
+                    }}
                     error={{}}
-                    value={this.state.testData}
+                    value={JSON.parse(JSON.stringify(this.state.testData))}
                     required={true}
                     fieldSet={{}}
                     description="My description"
