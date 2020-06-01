@@ -74,7 +74,6 @@ export const FlatObjectList = ({ id, value = [], schema, onChange }) => {
   );
 };
 
-// TODO: in the current position of the manual test for the ObjectListWidget, inside Form.jsx, the CSS makes the pen-shaped button impossible to be clicked, and when I click it after a change to the DOM in DevTools, a page refresh is triggered
 // TODO: on Add button press, scroll contents to bottom
 // TODO: count shown outside the Form is not updated
 // TODO: cancel button works or saves?
@@ -208,6 +207,9 @@ const ObjectListWidget = (props) => {
         value={currentValue}
       />
       <Form.Field
+        onClick={(e) => {
+          e.preventDefault();
+        }}
         inline
         required={required}
         error={(error || []).length > 0}
@@ -230,6 +232,14 @@ const ObjectListWidget = (props) => {
               </div>
             </Grid.Column>
             <Grid.Column width="8">
+              <Input
+                id={`field-${id}`}
+                name={id}
+                disabled={true}
+                icon={penSVG}
+                value={`A collection of ${currentValue.length} items`}
+              />
+
               {onEdit && (
                 <div className="toolbar">
                   <button
@@ -248,15 +258,8 @@ const ObjectListWidget = (props) => {
                 </div>
               )}
 
-              <Input
-                id={`field-${id}`}
-                name={id}
-                disabled={true}
-                icon={penSVG}
-                value={`A collection of ${currentValue.length} items`}
-              />
-              <button
-                onClick={() => {
+              <Button
+                onClick={(e) => {
                   console.log('on Pen click value = ', initialValue);
                   setCurrentValue(JSON.parse(JSON.stringify(initialValue)));
                   setOpen(true);
@@ -264,7 +267,7 @@ const ObjectListWidget = (props) => {
               >
                 {/* TODO: instead of px use rem if possible */}
                 <VoltoIcon name={penSVG} size="18px" />
-              </button>
+              </Button>
 
               {map(error, (message) => (
                 <Label key={message} basic color="red" pointing>
