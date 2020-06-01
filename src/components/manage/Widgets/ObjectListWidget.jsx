@@ -11,6 +11,7 @@ import {
   Segment,
 } from 'semantic-ui-react';
 import React, { Fragment, useState } from 'react';
+import { defineMessages, injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import { Icon as VoltoIcon } from '@plone/volto/components';
 import deleteSVG from '@plone/volto/icons/delete.svg';
@@ -21,11 +22,25 @@ import ObjectWidget from './ObjectWidget';
 import { useRef } from 'react';
 
 // TODO: make the ObjectWidget and ObjectListWidget (at least keyboard) accessible
-// and use translations where needed
 // TODO: if the data is changed from outside of the modal, when the modal is opened, does it show the new data?
 // TODO: write unit tests
 
-export const FlatObjectList = ({ id, value = [], schema, onChange }) => {
+const messages = defineMessages({
+  add: {
+    id: 'Add {schemaTitle}',
+    defaultMessage: 'Add {schemaTitle}',
+  },
+  save: {
+    id: 'Save',
+    defaultMessage: 'Save',
+  },
+  count: {
+    id: 'A collection of {count} items',
+    defaultMessage: 'A collection of {count} items',
+  },
+});
+
+const FlatObjectList = injectIntl(({ id, value = [], schema, onChange }) => {
   return (
     <div className="objectlist-widget-content">
       {!value && <ObjectWidget id={`${id}-0`} schema={schema} />}
@@ -72,9 +87,9 @@ export const FlatObjectList = ({ id, value = [], schema, onChange }) => {
       ))}
     </div>
   );
-};
+});
 
-export const ModalObjectListForm = (props) => {
+const ModalObjectListForm = injectIntl((props) => {
   const {
     open,
     title,
@@ -124,6 +139,12 @@ export const ModalObjectListForm = (props) => {
           floated="left"
           size="big"
           className="icon"
+          title={props.intl.formatMessage(messages.add, {
+            schemaTitle: schema.title,
+          })}
+          aria-label={props.intl.formatMessage(messages.add, {
+            schemaTitle: schema.title,
+          })}
           onClick={() => {
             setStateValue([...stateValue, createEmpty()]);
           }}
@@ -139,8 +160,8 @@ export const ModalObjectListForm = (props) => {
           primary
           floated="right"
           icon="arrow right"
-          aria-label="Save"
-          title="Save"
+          title={props.intl.formatMessage(messages.save)}
+          aria-label={props.intl.formatMessage(messages.save)}
           size="big"
           onClick={() => {
             onSave(id, stateValue);
@@ -163,7 +184,7 @@ export const ModalObjectListForm = (props) => {
       </Modal.Actions>
     </Modal>
   );
-};
+});
 
 const ObjectListWidget = (props) => {
   const {
@@ -228,7 +249,9 @@ const ObjectListWidget = (props) => {
                 name={id}
                 disabled={true}
                 icon={penSVG}
-                value={`A collection of ${value.length} items`}
+                value={props.intl.formatMessage(messages.count, {
+                  count: value.length,
+                })}
               />
 
               {onEdit && (
@@ -306,4 +329,4 @@ ObjectListWidget.defaultProps = {
   value: [],
 };
 
-export default ObjectListWidget;
+export default injectIntl(ObjectListWidget, { forwardRef: true });
