@@ -46,8 +46,6 @@ export const FlatObjectList = ({ id, value = [], schema, onChange }) => {
     [id, onChange, value],
   );
 
-  console.log('rendering FlatObjectList, value = ', value);
-
   return (
     <div className="objectlist-widget-content">
       {!value && <ObjectWidget schema={schema} />}
@@ -114,22 +112,16 @@ export const ModalObjectListForm = (props) => {
 
   const [stateValue, setStateValue] = useState([...value]);
 
-  // function resetForm() {
-  //   setStateValue([createEmpty()]);
-  // }
-
   useEffect(() => {
     setStateValue([...value]);
   }, [value]);
 
   const doSave = useCallback(() => {
     onSave(id, stateValue);
-    //setStateValue([...value]);
   }, [onSave, id, stateValue, value]);
 
   const doCancel = useCallback(() => {
     onCancel();
-    //setStateValue([...value]);
   }, [onCancel, value]);
 
   return (
@@ -140,17 +132,7 @@ export const ModalObjectListForm = (props) => {
           value={stateValue}
           schema={schema}
           onChange={(id, v) => {
-            // console.log('FlatObjectList onChange => setStateValue( ', v, ' )');
-            // console.log('v', JSON.stringify(v, null, 3));
-            console.log('stateValue in ModalObjectListForm: ', stateValue);
-            console.log('v in ModalObjectListForm: ', v);
-
             setStateValue([...v]);
-
-            console.log(
-              'stateValue in ModalObjectListForm after setting it: ',
-              stateValue,
-            );
           }}
         />
       </Modal.Content>
@@ -218,39 +200,16 @@ const ObjectListWidget = (props) => {
 
   useEffect(() => {
     setOpen(false);
-    console.log(
-      'ObjectListWidget before onChange currentValue = ',
-      currentValue,
-    );
     onChange(id, currentValue);
-    console.log(
-      'ObjectListWidget after onChange currentValue = ',
-      currentValue,
-    );
-    // console.log('ON SAVE value = ', val);
-    // console.log('ON SAVE currentValue = ', currentValue);
-
-    // return () => {
-    //   cleanup
-    // }
   }, [currentValue]);
 
   const handleCancel = useCallback(() => {
     setOpen(false);
   });
 
-  const handleSave = useCallback(
-    (id, val) => {
-      // gets here with success
-      //console.log('ON SAVE', { id, value });
-      // setCurrentValue(JSON.parse(JSON.stringify(value)));
-      // console.log('current value before set', currentValue);
-      // setCurrentValue(JSON.parse(JSON.stringify(val)));
-      setCurrentValue([...val]);
-      // console.log('current value after set', currentValue);
-    },
-    [currentValue],
-  );
+  const handleSave = useCallback((id, val) => {
+    setCurrentValue([...val]);
+  }, [currentValue]);
 
   console.log('render of ObjectListWidget, ', currentValue);
 
@@ -318,9 +277,8 @@ const ObjectListWidget = (props) => {
 
               <Button
                 onClick={(e) => {
-                  //console.log('on Pen click value = ', initialValue);
-                  //setCurrentValue(JSON.parse(JSON.stringify(initialValue)));
-                  // setCurrentValue(JSON.parse(JSON.stringify(value)));
+                  console.log('currentValue.length', currentValue.length); // TODO: 2 but in the render() of FlatObjectList I have 1
+
                   setOpen(true);
                 }}
               >
