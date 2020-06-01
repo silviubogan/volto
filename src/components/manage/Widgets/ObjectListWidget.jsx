@@ -10,7 +10,7 @@ import {
   Modal,
   Segment,
 } from 'semantic-ui-react';
-import React, { Fragment, useState, useCallback, useEffect } from 'react';
+import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Icon as VoltoIcon } from '@plone/volto/components';
 import deleteSVG from '@plone/volto/icons/delete.svg';
@@ -22,7 +22,7 @@ import ObjectWidget from './ObjectWidget';
 export const FlatObjectList = ({ id, value = [], schema, onChange }) => {
   return (
     <div className="objectlist-widget-content">
-      {!value && <ObjectWidget schema={schema} />}
+      {!value && <ObjectWidget id={`${id}-0`} schema={schema} />}
       {value.map((obj, index) => (
         // TODO: notice that the Fragment key={} might cause problems, need to test
         <Fragment key={index}>
@@ -30,17 +30,20 @@ export const FlatObjectList = ({ id, value = [], schema, onChange }) => {
             <Grid.Column width={11}>
               <Segment>
                 <ObjectWidget
+                  id={`${id}-${index}`}
                   key={index}
                   schema={schema}
                   value={obj}
-                  onChange={(fi, fv) =>
-                    onChange(
-                      id,
-                      value.map((v, i) =>
-                        i !== index ? v : { ...v, [fi]: fv },
-                      ),
-                    )
-                  }
+                  onChange={(fi, fv) => {
+                    console.log('Field id', fi);
+                    console.log('Field value', fv);
+
+                    const newvalue = value.map((v, i) =>
+                      i !== index ? v : fv,
+                    );
+                    console.log('Change field', newvalue);
+                    onChange(id, newvalue);
+                  }}
                 />
               </Segment>
             </Grid.Column>
@@ -91,30 +94,19 @@ export const ModalObjectListForm = (props) => {
     return {};
   }
 
-  const [stateValue, setStateValue] = useState([...value]);
-
-  // useEffect(() => {
-  //   setStateValue([...value]);
-  // }, [value]);
-
-  // const doSave = useCallback(() => {
-  //   onSave(id, stateValue);
-  // }, [onSave, id, stateValue, value]);
-
-  // const doCancel = useCallback(() => {
-  //   onCancel();
-  // }, [onCancel, value]);
+  const [stateValue, setStateValue] = useState(value);
 
   return (
     <Modal open={open} className={className}>
       <Header>{title}</Header>
       <Modal.Content scrolling>
         <FlatObjectList
+          id={id}
           value={stateValue}
           schema={schema}
           onChange={(id, v) => {
             // console.log(id, v);
-            console.dir(v);
+            console.log('OnChangeFromFlat', v);
             setStateValue(v);
           }}
         />
@@ -184,41 +176,23 @@ const ObjectListWidget = (props) => {
   } = props;
 
   const [open, setOpen] = useState(false);
-  // const [currentValue, setCurrentValue] = useState([...value]);
-
-  // useEffect(() => {
-  //   setOpen(false);
-  //   onChange(id, currentValue);
-  // }, [currentValue]);
-
-  // const handleCancel = useCallback(() => {
-  //   setOpen(false);
-  // });
-
-  // const handleSave = useCallback(
-  //   (id, val) => {
-  //     setCurrentValue([...val]);
-  //   },
-  //   [currentValue],
-  // );
-
-  // console.log('render of ObjectListWidget, ', currentValue);
+  console.log('ObjectWidget value: ', value);
 
   return (
     <>
       <ModalObjectListForm
         id={id}
         schema={schema}
+        value={value}
         open={open}
         onSave={(id, val) => {
-          console.log('asdfg');
+          console.log('new value from modal:', val);
           onChange(id, val);
           setOpen(false);
         }}
         onCancel={() => {
           setOpen(false);
         }}
-        value={value}
       />
       <Form.Field
         onClick={(e) => {
