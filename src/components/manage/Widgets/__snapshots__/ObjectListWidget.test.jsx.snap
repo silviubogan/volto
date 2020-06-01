@@ -4,6 +4,7 @@ exports[`renders an object list widget component 1`] = `
 <div
   className="inline required field help text"
   id="[object Object]-my-widget"
+  onClick={[Function]}
 >
   <div
     className="ui grid"
@@ -32,6 +33,30 @@ exports[`renders an object list widget component 1`] = `
         className="eight wide column"
       >
         <div
+          className="ui disabled icon input"
+        >
+          <input
+            disabled={true}
+            id="field-my-widget"
+            name="my-widget"
+            onChange={[Function]}
+            tabIndex={-1}
+            type="text"
+            value="A collection of 2 items"
+          />
+          <i
+            aria-hidden="true"
+            attributes={
+              Object {
+                "viewBox": "",
+                "xmlns": "",
+              }
+            }
+            className="icon"
+            onClick={[Function]}
+          />
+        </div>
+        <div
           className="toolbar"
         >
           <button
@@ -56,31 +81,8 @@ exports[`renders an object list widget component 1`] = `
             />
           </button>
         </div>
-        <div
-          className="ui disabled icon input"
-        >
-          <input
-            disabled={true}
-            id="field-my-widget"
-            name="my-widget"
-            onChange={[Function]}
-            tabIndex={-1}
-            type="text"
-            value="A collection of 2 items"
-          />
-          <i
-            aria-hidden="true"
-            attributes={
-              Object {
-                "viewBox": "",
-                "xmlns": "",
-              }
-            }
-            className="icon"
-            onClick={[Function]}
-          />
-        </div>
         <button
+          className="ui button"
           onClick={[Function]}
         >
           <svg
