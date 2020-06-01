@@ -20,32 +20,6 @@ import addSVG from '@plone/volto/icons/add.svg';
 import ObjectWidget from './ObjectWidget';
 
 export const FlatObjectList = ({ id, value = [], schema, onChange }) => {
-  // fi - changed field's index
-  // fv - changed field's value
-  const doChange = useCallback(
-    (index, fi, fv) =>
-      onChange(
-        id, // the id of the FlatObjectList
-        // v - the current value
-        // i - the current index
-        //
-        // for each value, if not changed, leave it as it is,
-        // otherwise add to it (it being an object)
-        // the fi property with the value fv
-        value.map((v, i) => (i !== index ? v : { ...v, [fi]: fv })),
-      ),
-    [id, onChange, value],
-  );
-
-  const doDelete = useCallback(
-    (index) =>
-      onChange(
-        id,
-        value.filter((v, i) => i !== index),
-      ),
-    [id, onChange, value],
-  );
-
   return (
     <div className="objectlist-widget-content">
       {!value && <ObjectWidget schema={schema} />}
@@ -56,15 +30,17 @@ export const FlatObjectList = ({ id, value = [], schema, onChange }) => {
             <Grid.Column width={11}>
               <Segment>
                 <ObjectWidget
-                  id={index}
                   key={index}
                   schema={schema}
                   value={obj}
-                  onChange={(id, changedObj) => {
-                    console.log('FlatObjectList changed');
-                    doChange(index, index, changedObj);
-                  }}
-                  errors={{}}
+                  onChange={(fi, fv) =>
+                    onChange(
+                      id,
+                      value.map((v, i) =>
+                        i !== index ? v : { ...v, [fi]: fv },
+                      ),
+                    )
+                  }
                 />
               </Segment>
             </Grid.Column>
@@ -74,7 +50,12 @@ export const FlatObjectList = ({ id, value = [], schema, onChange }) => {
                   basic
                   circular
                   size="mini"
-                  onClick={() => doDelete(index)}
+                  onClick={() =>
+                    onChange(
+                      id,
+                      value.filter((v, i) => i !== index),
+                    )
+                  }
                 >
                   {/* TODO: instead of px use rem if possible */}
                   <VoltoIcon size="20px" name={deleteSVG} />
@@ -112,17 +93,17 @@ export const ModalObjectListForm = (props) => {
 
   const [stateValue, setStateValue] = useState([...value]);
 
-  useEffect(() => {
-    setStateValue([...value]);
-  }, [value]);
+  // useEffect(() => {
+  //   setStateValue([...value]);
+  // }, [value]);
 
-  const doSave = useCallback(() => {
-    onSave(id, stateValue);
-  }, [onSave, id, stateValue, value]);
+  // const doSave = useCallback(() => {
+  //   onSave(id, stateValue);
+  // }, [onSave, id, stateValue, value]);
 
-  const doCancel = useCallback(() => {
-    onCancel();
-  }, [onCancel, value]);
+  // const doCancel = useCallback(() => {
+  //   onCancel();
+  // }, [onCancel, value]);
 
   return (
     <Modal open={open} className={className}>
@@ -132,7 +113,9 @@ export const ModalObjectListForm = (props) => {
           value={stateValue}
           schema={schema}
           onChange={(id, v) => {
-            setStateValue([...v]);
+            // console.log(id, v);
+            console.dir(v);
+            setStateValue(v);
           }}
         />
       </Modal.Content>
@@ -162,7 +145,9 @@ export const ModalObjectListForm = (props) => {
           aria-label="Save"
           title="Save"
           size="big"
-          onClick={doSave}
+          onClick={() => {
+            onSave(id, stateValue);
+          }}
         />
         <Button
           basic
@@ -173,7 +158,10 @@ export const ModalObjectListForm = (props) => {
           title="Cancel"
           floated="right"
           size="big"
-          onClick={doCancel}
+          onClick={() => {
+            setStateValue([...value]);
+            onCancel();
+          }}
         />
       </Modal.Actions>
     </Modal>
@@ -196,22 +184,25 @@ const ObjectListWidget = (props) => {
   } = props;
 
   const [open, setOpen] = useState(false);
-  const [currentValue, setCurrentValue] = useState([...value]);
+  // const [currentValue, setCurrentValue] = useState([...value]);
 
-  useEffect(() => {
-    setOpen(false);
-    onChange(id, currentValue);
-  }, [currentValue]);
+  // useEffect(() => {
+  //   setOpen(false);
+  //   onChange(id, currentValue);
+  // }, [currentValue]);
 
-  const handleCancel = useCallback(() => {
-    setOpen(false);
-  });
+  // const handleCancel = useCallback(() => {
+  //   setOpen(false);
+  // });
 
-  const handleSave = useCallback((id, val) => {
-    setCurrentValue([...val]);
-  }, [currentValue]);
+  // const handleSave = useCallback(
+  //   (id, val) => {
+  //     setCurrentValue([...val]);
+  //   },
+  //   [currentValue],
+  // );
 
-  console.log('render of ObjectListWidget, ', currentValue);
+  // console.log('render of ObjectListWidget, ', currentValue);
 
   return (
     <>
@@ -219,9 +210,15 @@ const ObjectListWidget = (props) => {
         id={id}
         schema={schema}
         open={open}
-        onSave={handleSave}
-        onCancel={handleCancel}
-        value={currentValue}
+        onSave={(id, val) => {
+          console.log('asdfg');
+          onChange(id, val);
+          setOpen(false);
+        }}
+        onCancel={() => {
+          setOpen(false);
+        }}
+        value={value}
       />
       <Form.Field
         onClick={(e) => {
@@ -254,7 +251,7 @@ const ObjectListWidget = (props) => {
                 name={id}
                 disabled={true}
                 icon={penSVG}
-                value={`A collection of ${currentValue.length} items`}
+                value={`A collection of ${value.length} items`}
               />
 
               {onEdit && (
@@ -277,7 +274,7 @@ const ObjectListWidget = (props) => {
 
               <Button
                 onClick={(e) => {
-                  console.log('currentValue.length', currentValue.length); // TODO: 2 but in the render() of FlatObjectList I have 1
+                  console.log('currentValue.length', value.length); // TODO: 2 but in the render() of FlatObjectList I have 1
 
                   setOpen(true);
                 }}
