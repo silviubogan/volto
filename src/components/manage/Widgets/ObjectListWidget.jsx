@@ -10,7 +10,7 @@ import {
   Modal,
   Segment,
 } from 'semantic-ui-react';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Icon as VoltoIcon } from '@plone/volto/components';
 import deleteSVG from '@plone/volto/icons/delete.svg';
@@ -22,23 +22,31 @@ import ObjectWidget from './ObjectWidget';
 export const FlatObjectList = ({ id, value = [], schema, onChange }) => {
   // fi - changed field's index
   // fv - changed field's value
-  const doChange = (index) => (fi, fv) =>
-    onChange(
-      id, // the id of the FlatObjectList
-      // v - the current value
-      // i - the current index
-      //
-      // for each value, if not changed, leave it as it is,
-      // otherwise add to it (it being an object)
-      // the fi property with the value fv
-      value.map((v, i) => (i !== index ? v : { ...v, [fi]: fv })),
-    );
+  const doChange = useCallback(
+    (index, fi, fv) =>
+      onChange(
+        id, // the id of the FlatObjectList
+        // v - the current value
+        // i - the current index
+        //
+        // for each value, if not changed, leave it as it is,
+        // otherwise add to it (it being an object)
+        // the fi property with the value fv
+        value.map((v, i) => (i !== index ? v : { ...v, [fi]: fv })),
+      ),
+    [id, onChange, value],
+  );
 
-  const doDelete = (index) => () =>
-    onChange(
-      id,
-      value.filter((v, i) => i !== index),
-    );
+  const doDelete = useCallback(
+    (index) =>
+      onChange(
+        id,
+        value.filter((v, i) => i !== index),
+      ),
+    [id, onChange, value],
+  );
+
+  console.log('rendering FlatObjectList, value = ', value);
 
   return (
     <div className="objectlist-widget-content">
@@ -54,14 +62,22 @@ export const FlatObjectList = ({ id, value = [], schema, onChange }) => {
                   key={index}
                   schema={schema}
                   value={obj}
-                  onChange={doChange(index)}
+                  onChange={(id, changedObj) => {
+                    console.log('FlatObjectList changed');
+                    doChange(index, index, changedObj);
+                  }}
                   errors={{}}
                 />
               </Segment>
             </Grid.Column>
             <Grid.Column width={1}>
               <Button.Group>
-                <Button basic circular size="mini" onClick={doDelete(index)}>
+                <Button
+                  basic
+                  circular
+                  size="mini"
+                  onClick={() => doDelete(index)}
+                >
                   {/* TODO: instead of px use rem if possible */}
                   <VoltoIcon size="20px" name={deleteSVG} />
                 </Button>
@@ -75,7 +91,6 @@ export const FlatObjectList = ({ id, value = [], schema, onChange }) => {
 };
 
 // TODO: on Add button press, scroll contents to bottom
-// TODO: count shown outside the Form is not updated
 // TODO: cancel button works or saves?
 // TODO: delete item button works or deletes even if not saved?
 // TODO: make the ObjectWidget and ObjectListWidget (at least keyboard) accessible
@@ -99,19 +114,19 @@ export const ModalObjectListForm = (props) => {
 
   const [stateValue, setStateValue] = useState(value);
 
-  function resetForm() {
-    setStateValue([createEmpty()]);
-  }
+  // function resetForm() {
+  //   setStateValue([createEmpty()]);
+  // }
 
-  const doSave = () => {
+  const doSave = useCallback(() => {
     onSave(id, stateValue);
-    // resetForm();
-  };
+    setStateValue(value);
+  }, [onSave, id, stateValue, value]);
 
-  const doCancel = (...args) => {
-    onCancel(...args);
-    resetForm();
-  };
+  const doCancel = useCallback(() => {
+    onCancel();
+    setStateValue(value);
+  }, [onCancel, value]);
 
   return (
     <Modal open={open} className={className}>
@@ -120,7 +135,10 @@ export const ModalObjectListForm = (props) => {
         <FlatObjectList
           value={stateValue}
           schema={schema}
-          onChange={(id, v) => setStateValue(v)}
+          onChange={(id, v) => {
+            console.log('FlatObjectList onChange => setStateValue( ', v, ' )');
+            setStateValue(v);
+          }}
         />
       </Modal.Content>
       <Modal.Actions>
@@ -170,7 +188,7 @@ export const ModalObjectListForm = (props) => {
 const ObjectListWidget = (props) => {
   const {
     id,
-    initialValue = [],
+    value = [],
     schema,
     onChange,
     required,
@@ -181,13 +199,27 @@ const ObjectListWidget = (props) => {
     onDelete,
     onEdit,
   } = props;
+
   const [open, setOpen] = useState(false);
+  const [currentValue, setCurrentValue] = useState(value);
 
-  const [currentValue, setCurrentValue] = useState(initialValue);
-
-  function handleCancel() {
+  const handleCancel = useCallback(() => {
     setOpen(false);
-  }
+  });
+
+  const handleSave = useCallback(
+    (id, value) => {
+      // gets here with success
+      //console.log('ON SAVE', { id, value });
+      // setCurrentValue(JSON.parse(JSON.stringify(value)));
+      setCurrentValue(JSON.parse(JSON.stringify(value)));
+      onChange(id, value);
+      console.log('ON SAVE value = ', value);
+      console.log('ON SAVE currentValue = ', currentValue);
+      setOpen(false);
+    },
+    [onChange],
+  );
 
   return (
     <>
@@ -195,14 +227,7 @@ const ObjectListWidget = (props) => {
         id={id}
         schema={schema}
         open={open}
-        onSave={(id, value) => {
-          // gets here with success
-          //console.log('ON SAVE', { id, value });
-          setCurrentValue(JSON.parse(JSON.stringify(value)));
-          onChange(id, value);
-          console.log('ON SAVE value = ', value);
-          setOpen(false);
-        }}
+        onSave={handleSave}
         onCancel={handleCancel}
         value={currentValue}
       />
@@ -260,8 +285,9 @@ const ObjectListWidget = (props) => {
 
               <Button
                 onClick={(e) => {
-                  console.log('on Pen click value = ', initialValue);
-                  setCurrentValue(JSON.parse(JSON.stringify(initialValue)));
+                  //console.log('on Pen click value = ', initialValue);
+                  //setCurrentValue(JSON.parse(JSON.stringify(initialValue)));
+                  // setCurrentValue(JSON.parse(JSON.stringify(value)));
                   setOpen(true);
                 }}
               >

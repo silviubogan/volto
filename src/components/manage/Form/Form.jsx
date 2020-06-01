@@ -239,6 +239,10 @@ class Form extends Component {
           ? formData[blocksLayoutFieldname].items[0]
           : null,
       placeholderProps: {},
+      testData: [
+        { external_link: 'https://ddg.gg' },
+        { external_link: 'https://wikipedia.org' },
+      ],
     };
     this.onChangeField = this.onChangeField.bind(this);
     this.onChangeBlock = this.onChangeBlock.bind(this);
@@ -755,8 +759,6 @@ class Form extends Component {
     const blocksDict = formData?.[blocksFieldname];
     const schema = this.removeBlocksLayoutFields(originalSchema);
 
-    console.dir('formData', formData);
-
     return this.props.visual ? (
       // Removing this from SSR is important, since react-beautiful-dnd supports SSR,
       // but draftJS don't like it much and the hydration gets messed up
@@ -853,12 +855,9 @@ class Form extends Component {
                     id={`my-widget`}
                     schema={LinkSchema}
                     title="My Widget"
-                    onChange={this.onChangeField}
+                    onChange={(id, v) => this.setState(() => ({ testData: v }))}
                     error={{}}
-                    initialValue={[
-                      { external_link: 'https://ddg.gg' },
-                      { external_link: 'https://wikipedia.org' },
-                    ]}
+                    value={this.state.testData}
                     required={true}
                     fieldSet={{}}
                     description="My description"
