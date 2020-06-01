@@ -34,60 +34,76 @@ const messages = defineMessages({
     id: 'Save',
     defaultMessage: 'Save',
   },
+  delete: {
+    id: 'Delete',
+    defaultMessage: 'Delete',
+  },
+  cancel: {
+    id: 'Cancel',
+    defaultMessage: 'Cancel',
+  },
+  edit: {
+    id: 'Edit',
+    defaultMessage: 'Edit',
+  },
   count: {
     id: 'A collection of {count} items',
     defaultMessage: 'A collection of {count} items',
   },
 });
 
-const FlatObjectList = injectIntl(({ id, value = [], schema, onChange }) => {
-  return (
-    <div className="objectlist-widget-content">
-      {!value && <ObjectWidget id={`${id}-0`} schema={schema} />}
-      {value.map((obj, index) => (
-        // TODO: notice that the Fragment key={} might cause problems, need to test
-        <Fragment key={index}>
-          <Grid>
-            <Grid.Column width={11}>
-              <Segment>
-                <ObjectWidget
-                  id={`${id}-${index}`}
-                  key={index}
-                  schema={schema}
-                  value={obj}
-                  onChange={(fi, fv) => {
-                    const newvalue = value.map((v, i) =>
-                      i !== index ? v : fv,
-                    );
-                    onChange(id, newvalue);
-                  }}
-                />
-              </Segment>
-            </Grid.Column>
-            <Grid.Column width={1}>
-              <Button.Group>
-                <Button
-                  basic
-                  circular
-                  size="mini"
-                  onClick={() =>
-                    onChange(
-                      id,
-                      value.filter((v, i) => i !== index),
-                    )
-                  }
-                >
-                  {/* TODO: instead of px use rem if possible */}
-                  <VoltoIcon size="20px" name={deleteSVG} />
-                </Button>
-              </Button.Group>
-            </Grid.Column>
-          </Grid>
-        </Fragment>
-      ))}
-    </div>
-  );
-});
+const FlatObjectList = injectIntl(
+  ({ id, value = [], schema, onChange, intl }) => {
+    return (
+      <div className="objectlist-widget-content">
+        {!value && <ObjectWidget id={`${id}-0`} schema={schema} />}
+        {value.map((obj, index) => (
+          // TODO: notice that the Fragment key={} might cause problems, need to test
+          <Fragment key={index}>
+            <Grid>
+              <Grid.Column width={11}>
+                <Segment>
+                  <ObjectWidget
+                    id={`${id}-${index}`}
+                    key={index}
+                    schema={schema}
+                    value={obj}
+                    onChange={(fi, fv) => {
+                      const newvalue = value.map((v, i) =>
+                        i !== index ? v : fv,
+                      );
+                      onChange(id, newvalue);
+                    }}
+                  />
+                </Segment>
+              </Grid.Column>
+              <Grid.Column width={1}>
+                <Button.Group>
+                  <Button
+                    basic
+                    circular
+                    size="mini"
+                    title={intl.formatMessage(messages.delete)}
+                    aria-label={intl.formatMessage(messages.delete)}
+                    onClick={() =>
+                      onChange(
+                        id,
+                        value.filter((v, i) => i !== index),
+                      )
+                    }
+                  >
+                    {/* TODO: instead of px use rem if possible */}
+                    <VoltoIcon size="20px" name={deleteSVG} />
+                  </Button>
+                </Button.Group>
+              </Grid.Column>
+            </Grid>
+          </Fragment>
+        ))}
+      </div>
+    );
+  },
+);
 
 const ModalObjectListForm = injectIntl((props) => {
   const {
@@ -172,8 +188,8 @@ const ModalObjectListForm = injectIntl((props) => {
           circular
           secondary
           icon="remove"
-          aria-label="Cancel"
-          title="Cancel"
+          title={props.intl.formatMessage(messages.cancel)}
+          aria-label={props.intl.formatMessage(messages.cancel)}
           floated="right"
           size="big"
           onClick={() => {
@@ -208,6 +224,7 @@ const ObjectListWidget = (props) => {
       <ModalObjectListForm
         id={id}
         schema={schema}
+        title={title}
         value={value}
         open={open}
         onSave={(id, val) => {
@@ -257,13 +274,16 @@ const ObjectListWidget = (props) => {
               {onEdit && (
                 <div className="toolbar">
                   <button
+                    aria-label={props.intl.formatMessage(messages.edit)}
+                    title={props.intl.formatMessage(messages.edit)}
                     className="item ui noborder button"
                     onClick={() => onEdit(id, schema)}
                   >
                     <Icon name="write square" size="large" color="blue" />
                   </button>
                   <button
-                    aria-label="Delete"
+                    aria-label={props.intl.formatMessage(messages.delete)}
+                    title={props.intl.formatMessage(messages.delete)}
                     className="item ui noborder button"
                     onClick={() => onDelete(id)}
                   >
@@ -273,7 +293,7 @@ const ObjectListWidget = (props) => {
               )}
 
               <Button
-                onClick={(e) => {
+                onClick={() => {
                   setOpen(true);
                 }}
               >
