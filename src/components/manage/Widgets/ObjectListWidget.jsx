@@ -19,6 +19,12 @@ import addSVG from '@plone/volto/icons/add.svg';
 
 import ObjectWidget from './ObjectWidget';
 
+// TODO: on Add button press, scroll contents to bottom
+// TODO: make the ObjectWidget and ObjectListWidget (at least keyboard) accessible
+// and use translations where needed
+// TODO: if the data is changed from outside of the modal, when the modal is opened, does it show the new data?
+// TODO: write unit tests
+
 export const FlatObjectList = ({ id, value = [], schema, onChange }) => {
   return (
     <div className="objectlist-widget-content">
@@ -35,13 +41,9 @@ export const FlatObjectList = ({ id, value = [], schema, onChange }) => {
                   schema={schema}
                   value={obj}
                   onChange={(fi, fv) => {
-                    console.log('Field id', fi);
-                    console.log('Field value', fv);
-
                     const newvalue = value.map((v, i) =>
                       i !== index ? v : fv,
                     );
-                    console.log('Change field', newvalue);
                     onChange(id, newvalue);
                   }}
                 />
@@ -72,10 +74,6 @@ export const FlatObjectList = ({ id, value = [], schema, onChange }) => {
   );
 };
 
-// TODO: on Add button press, scroll contents to bottom
-// TODO: make the ObjectWidget and ObjectListWidget (at least keyboard) accessible
-// and use translations where needed
-
 export const ModalObjectListForm = (props) => {
   const {
     open,
@@ -103,8 +101,6 @@ export const ModalObjectListForm = (props) => {
           value={stateValue}
           schema={schema}
           onChange={(id, v) => {
-            // console.log(id, v);
-            console.log('OnChangeFromFlat', v);
             setStateValue(v);
           }}
         />
@@ -174,7 +170,6 @@ const ObjectListWidget = (props) => {
   } = props;
 
   const [open, setOpen] = useState(false);
-  console.log('ObjectWidget value: ', value);
 
   return (
     <>
@@ -184,7 +179,6 @@ const ObjectListWidget = (props) => {
         value={value}
         open={open}
         onSave={(id, val) => {
-          console.log('new value from modal:', val);
           onChange(id, val);
           setOpen(false);
         }}
@@ -246,8 +240,6 @@ const ObjectListWidget = (props) => {
 
               <Button
                 onClick={(e) => {
-                  console.log('currentValue.length', value.length); // TODO: 2 but in the render() of FlatObjectList I have 1
-
                   setOpen(true);
                 }}
               >
