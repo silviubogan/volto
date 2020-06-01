@@ -18,8 +18,8 @@ import penSVG from '@plone/volto/icons/pen.svg';
 import addSVG from '@plone/volto/icons/add.svg';
 
 import ObjectWidget from './ObjectWidget';
+import { useRef } from 'react';
 
-// TODO: on Add button press, scroll contents to bottom
 // TODO: make the ObjectWidget and ObjectListWidget (at least keyboard) accessible
 // and use translations where needed
 // TODO: if the data is changed from outside of the modal, when the modal is opened, does it show the new data?
@@ -86,24 +86,35 @@ export const ModalObjectListForm = (props) => {
     id,
   } = props;
 
+  const [stateValue, setStateValue] = useState(value);
+  let modalContentRef = useRef(null);
+
+  React.useEffect(() => {
+    if (modalContentRef.current) {
+      modalContentRef.current.scrollIntoView({
+        block: 'end',
+      });
+    }
+  }, [modalContentRef, stateValue]);
+
   function createEmpty() {
     return {};
   }
-
-  const [stateValue, setStateValue] = useState(value);
 
   return (
     <Modal open={open} className={className}>
       <Header>{title}</Header>
       <Modal.Content scrolling>
-        <FlatObjectList
-          id={id}
-          value={stateValue}
-          schema={schema}
-          onChange={(id, v) => {
-            setStateValue(v);
-          }}
-        />
+        <div ref={modalContentRef}>
+          <FlatObjectList
+            id={id}
+            value={stateValue}
+            schema={schema}
+            onChange={(id, v) => {
+              setStateValue(v);
+            }}
+          />
+        </div>
       </Modal.Content>
       <Modal.Actions>
         <Button
