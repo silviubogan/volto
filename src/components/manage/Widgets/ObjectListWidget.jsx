@@ -73,8 +73,6 @@ export const FlatObjectList = ({ id, value = [], schema, onChange }) => {
 };
 
 // TODO: on Add button press, scroll contents to bottom
-// TODO: cancel button works or saves?
-// TODO: delete item button works or deletes even if not saved?
 // TODO: make the ObjectWidget and ObjectListWidget (at least keyboard) accessible
 // and use translations where needed
 
