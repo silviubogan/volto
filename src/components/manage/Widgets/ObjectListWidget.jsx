@@ -21,7 +21,7 @@ import addSVG from '@plone/volto/icons/add.svg';
 
 import ObjectWidget from './ObjectWidget';
 
-// TODO: make the ObjectWidget and ObjectListWidget (at least keyboard) accessible
+// TODO: make the ObjectWidget and ObjectListWidget (at least keyboard) accessible (e.g. Esc should close the Modal)
 // - see: https://github.com/Semantic-Org/Semantic-UI/issues/5053
 // TODO: write unit tests
 
