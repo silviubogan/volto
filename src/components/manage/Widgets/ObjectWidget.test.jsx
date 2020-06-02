@@ -77,19 +77,37 @@ test('renders an object widget controlled component', () => {
     },
   });
 
-  const component = renderer.create(
+  const id = 'my-widget';
+  let myVal = { external_link: 'etc' };
+  let testRenderer = null;
+
+  let handleChange = (id, val) => {
+    myVal = val;
+    testRenderer.update(testRenderer.getInstance());
+  };
+
+  testRenderer = renderer.create(
     <Provider store={store}>
       <ObjectWidget
-        id="my-widget"
+        id={id}
         schema={LinkSchema}
-        value={{}}
+        value={myVal}
         title="My Widget"
-        onChange={() => {}}
+        onChange={handleChange}
         errors={{}}
       />
     </Provider>,
   );
 
-  const json = component.toJSON();
-  expect(json).toMatchSnapshot();
+  const testInstance = testRenderer.root;
+
+  // call onChange then check value
+
+  testInstance
+    .findByType(ObjectWidget)
+    .props.onChange(id, { external_link: 'abc' });
+
+  expect(testInstance.findByType(ObjectWidget).props.value.external_link).toBe(
+    'abc',
+  );
 });
