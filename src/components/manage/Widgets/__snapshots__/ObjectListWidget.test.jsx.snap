@@ -60,8 +60,10 @@ exports[`renders an object list widget component 1`] = `
           className="toolbar"
         >
           <button
+            aria-label="Edit"
             className="item ui noborder button"
             onClick={[Function]}
+            title="Edit"
           >
             <i
               aria-hidden="true"
@@ -73,6 +75,7 @@ exports[`renders an object list widget component 1`] = `
             aria-label="Delete"
             className="item ui noborder button"
             onClick={[Function]}
+            title="Delete"
           >
             <i
               aria-hidden="true"
