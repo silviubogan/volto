@@ -2,7 +2,12 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import configureStore from 'redux-mock-store';
 import { Provider } from 'react-intl-redux';
-import { render, fireEvent, waitFor, screen } from '@testing-library/react';
+import {
+  render,
+  fireEvent,
+  waitForElement,
+  waitForDomChange,
+} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import ObjectWidget from './ObjectWidget';
 
@@ -46,7 +51,7 @@ const LinkSchema = {
   required: [],
 };
 
-test('renders an object widget component', () => {
+test('renders an object widget component with clicks on each tab in root level to load all of them', async () => {
   const store = mockStore({
     search: {},
     intl: {
@@ -55,7 +60,7 @@ test('renders an object widget component', () => {
     },
   });
 
-  const component = renderer.create(
+  const { getByText, asFragment, container } = render(
     <Provider store={store}>
       <ObjectWidget
         id="my-widget"
@@ -67,8 +72,49 @@ test('renders an object widget component', () => {
     </Provider>,
   );
 
-  const json = component.toJSON();
-  expect(json).toMatchSnapshot();
+  // await waitForDomChange({
+  //   mutationObserverOptions: {
+  //     subtree: true,
+  //     childList: true,
+  //     attributes: true,
+  //     characterData: true,
+  //   },
+  // });
+
+  // fireEvent.click(getByText('Internal'));
+
+  // await waitForDomChange({
+  //   mutationObserverOptions: {
+  //     subtree: true,
+  //     childList: true,
+  //     attributes: true,
+  //     characterData: true,
+  //   },
+  // });
+
+  fireEvent.click(getByText('External'));
+
+  await waitForDomChange({
+    mutationObserverOptions: {
+      subtree: true,
+      childList: true,
+      attributes: true,
+      characterData: true,
+    },
+  });
+
+  fireEvent.click(getByText('Email'));
+
+  await waitForDomChange({
+    mutationObserverOptions: {
+      subtree: true,
+      childList: true,
+      attributes: true,
+      characterData: true,
+    },
+  });
+
+  expect(asFragment()).toMatchSnapshot();
 });
 
 test('renders an object widget component with invalid field in value', () => {

@@ -1,76 +1,113 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders an object widget component 1`] = `
-<div>
-  <div
-    className="ui attached tabular menu"
-  >
-    <a
-      className="active item"
-      onClick={[Function]}
-    >
-      Internal
-    </a>
-    <a
-      className="item"
-      onClick={[Function]}
-    >
-      External
-    </a>
-    <a
-      className="item"
-      onClick={[Function]}
-    >
-      Email
-    </a>
-  </div>
-  <div
-    className="ui bottom attached segment active tab"
-  >
+exports[`renders an object widget component with clicks on each tab in root level to load all of them 1`] = `
+<DocumentFragment>
+  <div>
     <div
-      className="inline field text"
-      id="field-internal_link"
+      class="ui attached tabular menu"
+    >
+      <a
+        class="item"
+      >
+        Internal
+      </a>
+      <a
+        class="item"
+      >
+        External
+      </a>
+      <a
+        class="active item"
+      >
+        Email
+      </a>
+    </div>
+    <div
+      class="ui bottom attached segment active tab"
     >
       <div
-        className="ui grid"
+        class="inline field text"
+        id="field-email_address"
       >
         <div
-          className="stretched row"
+          class="ui grid"
         >
           <div
-            className="four wide column"
+            class="stretched row"
           >
             <div
-              className="wrapper"
+              class="four wide column"
             >
-              <label
-                htmlFor="field-internal_link"
+              <div
+                class="wrapper"
               >
-                Internal link
-              </label>
+                <label
+                  for="field-email_address"
+                >
+                  Email address
+                </label>
+              </div>
+            </div>
+            <div
+              class="eight wide column"
+            >
+              <div
+                class="ui input"
+              >
+                <input
+                  id="field-email_address"
+                  name="email_address"
+                  type="text"
+                  value=""
+                />
+              </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div
+        class="inline field text"
+        id="field-email_subject"
+      >
+        <div
+          class="ui grid"
+        >
           <div
-            className="eight wide column"
+            class="stretched row"
           >
             <div
-              className="ui input"
+              class="four wide column"
             >
-              <input
-                disabled={false}
-                id="field-internal_link"
-                name="internal_link"
-                onChange={[Function]}
-                type="text"
-                value=""
-              />
+              <div
+                class="wrapper"
+              >
+                <label
+                  for="field-email_subject"
+                >
+                  Email subject (optional)
+                </label>
+              </div>
+            </div>
+            <div
+              class="eight wide column"
+            >
+              <div
+                class="ui input"
+              >
+                <input
+                  id="field-email_subject"
+                  name="email_subject"
+                  type="text"
+                  value=""
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</DocumentFragment>
 `;
 
 exports[`renders an object widget component with invalid field in value 1`] = `
