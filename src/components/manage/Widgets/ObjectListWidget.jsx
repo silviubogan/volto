@@ -14,15 +14,14 @@ import React, { Fragment, useState } from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import { Icon as VoltoIcon } from '@plone/volto/components';
+
 import deleteSVG from '@plone/volto/icons/delete.svg';
 import penSVG from '@plone/volto/icons/pen.svg';
 import addSVG from '@plone/volto/icons/add.svg';
 
 import ObjectWidget from './ObjectWidget';
-import { useRef } from 'react';
 
 // TODO: make the ObjectWidget and ObjectListWidget (at least keyboard) accessible
-// TODO: if the data is changed from outside of the modal, when the modal is opened, does it show the new data?
 // TODO: write unit tests
 
 const messages = defineMessages({
@@ -56,7 +55,6 @@ const FlatObjectList = injectIntl(
   ({ id, value = [], schema, onChange, intl }) => {
     return (
       <div className="objectlist-widget-content">
-        {!value && <ObjectWidget id={`${id}-0`} schema={schema} />}
         {value.map((obj, index) => (
           // TODO: notice that the Fragment key={} might cause problems, need to test
           <Fragment key={index}>
@@ -118,7 +116,7 @@ const ModalObjectListForm = injectIntl((props) => {
   } = props;
 
   const [stateValue, setStateValue] = useState(value);
-  let modalContentRef = useRef(null);
+  const modalContentRef = React.useRef(null);
 
   React.useEffect(() => {
     if (modalContentRef.current) {
@@ -128,9 +126,17 @@ const ModalObjectListForm = injectIntl((props) => {
     }
   }, [modalContentRef, stateValue]);
 
-  function createEmpty() {
+  const createEmpty = React.useCallback(() => {
     return {};
-  }
+  }, []);
+
+  /**
+   * For when `value` is updated outside of the Modal and the Modal is reopened after that.
+   * (The current behaviour is that the contents of the reopened Modal are not updated.)
+   **/
+  React.useEffect(() => {
+    setStateValue(value);
+  }, [value]);
 
   return (
     <Modal open={open} className={className}>

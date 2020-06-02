@@ -56,7 +56,7 @@ const ObjectWidget = ({
 ObjectWidget.propTypes = {
   id: PropTypes.any.isRequired,
   schema: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired,
+  errors: PropTypes.object,
   value: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
 };

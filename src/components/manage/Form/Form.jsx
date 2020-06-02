@@ -866,6 +866,16 @@ class Form extends Component {
                     onDelete={() => {}}
                     onEdit={() => {}}
                   />
+                  <Button
+                    onClick={(e) => {
+                      this.setState(() => ({
+                        testData: [{ external_link: 'https://duckduckgo.com' }],
+                      }));
+                      e.preventDefault();
+                    }}
+                  >
+                    Click me !
+                  </Button>
                 </Segment>
                 {schema &&
                   map(schema.fieldsets, (item) => [
