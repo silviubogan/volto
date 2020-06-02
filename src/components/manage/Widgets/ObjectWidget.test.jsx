@@ -2,6 +2,8 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import configureStore from 'redux-mock-store';
 import { Provider } from 'react-intl-redux';
+import { render, fireEvent, waitFor, screen } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 import ObjectWidget from './ObjectWidget';
 
 const mockStore = configureStore();
@@ -52,6 +54,7 @@ test('renders an object widget component', () => {
       messages: {},
     },
   });
+
   const component = renderer.create(
     <Provider store={store}>
       <ObjectWidget
@@ -63,11 +66,12 @@ test('renders an object widget component', () => {
       />
     </Provider>,
   );
+
   const json = component.toJSON();
   expect(json).toMatchSnapshot();
 });
 
-test('renders an object widget component with invalid field in value and error object, and an error for a valid field', () => {
+test('renders an object widget component with invalid field in value', () => {
   const store = mockStore({
     search: {},
     intl: {
@@ -75,49 +79,20 @@ test('renders an object widget component with invalid field in value and error o
       messages: {},
     },
   });
+
+  // should not render anything for the invalid field in `value` object
   const component = renderer.create(
     <Provider store={store}>
       <ObjectWidget
         id="my-widget"
         schema={LinkSchema}
         value={{ invalid_field: true }}
-        errors={{
-          my_invalid_field: true,
-          external_link: 'https://www.google.com',
-        }}
         title="My Widget"
         onChange={() => {}}
       />
     </Provider>,
   );
-  const json = component.toJSON();
-  expect(json).toMatchSnapshot();
-});
 
-test('renders an object widget component with error for a valid field', () => {
-  const store = mockStore({
-    search: {},
-    intl: {
-      locale: 'en',
-      messages: {},
-    },
-  });
-  const component = renderer.create(
-    <Provider store={store}>
-      <ObjectWidget
-        id="my-widget"
-        schema={LinkSchema}
-        value={{
-          external_link: 'ww.google.com',
-        }}
-        errors={{
-          external_link: 'Invalid URL',
-        }}
-        title="My Widget"
-        onChange={() => {}}
-      />
-    </Provider>,
-  );
   const json = component.toJSON();
   expect(json).toMatchSnapshot();
 });
