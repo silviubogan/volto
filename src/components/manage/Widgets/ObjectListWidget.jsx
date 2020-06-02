@@ -334,7 +334,7 @@ const ObjectListWidget = (props) => {
  * @static
  */
 ObjectListWidget.propTypes = {
-  id: PropTypes.any.isRequired,
+  id: PropTypes.string.isRequired,
   schema: PropTypes.object.isRequired,
   error: PropTypes.any.isRequired,
   value: PropTypes.array,

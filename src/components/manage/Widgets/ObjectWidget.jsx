@@ -11,40 +11,46 @@ const ObjectWidget = ({
   id,
   ...props
 }) => {
-  const renderFieldSet = React.useCallback(
-    (fieldset) => {
-      return fieldset.fields.map((field, index) => {
-        return (
-          <Field
-            {...schema.properties[field]}
-            id={field}
-            fieldset={fieldset.title.toLowerCase()}
-            value={value?.[field]}
-            required={schema.required.indexOf(field) !== -1}
-            onChange={(field, fieldvalue) => {
-              return onChange(id, { ...value, [field]: fieldvalue });
-            }}
-            key={field}
-            error={errors[field]}
-            title={schema.properties[field].title}
-          />
-        );
-      });
-    },
-    [errors, onChange, schema, value, id],
-  );
+  const renderFieldSet = (fieldset) => {
+    return fieldset.fields.map((field) => {
+      return (
+        <Field
+          {...schema.properties[field]}
+          id={field}
+          fieldset={fieldset.title.toLowerCase()}
+          value={value?.[field]}
+          required={schema.required.indexOf(field) !== -1}
+          onChange={(field, fieldvalue) => {
+            return onChange(id, { ...value, [field]: fieldvalue });
+          }}
+          key={field}
+          error={errors?.[field]}
+          title={schema.properties[field].title}
+        />
+      );
+    });
+  };
 
+  const createTabPane = (fs) => () => {
+    console.log('fieldset', fs); // always prints the first fieldset
+    return <Tab.Pane>{renderFieldSet(fs)}</Tab.Pane>;
+  };
+
+  const createTab = (fieldset) => {
+    return {
+      menuItem: fieldset.title,
+      render: createTabPane(fieldset),
+    };
+  };
+
+  const panes = schema.fieldsets.map(createTab);
+  console.log('panes', panes);
+  console.log('FIELDSETS', schema.fieldsets); // all of them are there
+  console.log('count', schema.fieldsets.length);
   return schema.fieldsets.length === 1 ? (
     renderFieldSet(schema.fieldsets[0])
   ) : (
-    <Tab
-      panes={schema.fieldsets.map((fieldset) => {
-        return {
-          menuItem: fieldset.title,
-          render: () => <Tab.Pane>{renderFieldSet(fieldset)}</Tab.Pane>,
-        };
-      })}
-    />
+    <Tab panes={panes} />
   );
 };
 
@@ -54,7 +60,7 @@ const ObjectWidget = ({
  * @static
  */
 ObjectWidget.propTypes = {
-  id: PropTypes.any.isRequired,
+  id: PropTypes.string.isRequired,
   schema: PropTypes.object.isRequired,
   errors: PropTypes.object,
   value: PropTypes.object.isRequired,
