@@ -22,6 +22,7 @@ import addSVG from '@plone/volto/icons/add.svg';
 import ObjectWidget from './ObjectWidget';
 
 // TODO: make the ObjectWidget and ObjectListWidget (at least keyboard) accessible
+// - see: https://github.com/Semantic-Org/Semantic-UI/issues/5053
 // TODO: write unit tests
 
 const messages = defineMessages({
