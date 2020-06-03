@@ -8,7 +8,6 @@ import ObjectListWidget, {
   FlatObjectList,
   ModalObjectListForm,
 } from './ObjectListWidget';
-import { Modal } from 'semantic-ui-react';
 
 const mockStore = configureStore();
 
@@ -186,7 +185,7 @@ test('renders a flat object list component with an item', async () => {
   expect(asFragment()).toMatchSnapshot();
 });
 
-test('renders a modal object list form component and changes its value from outside, the changes are reflected in the modal, ', async () => {
+test('renders a modal object list form component and tests it in various ways', () => {
   const store = mockStore({
     search: {},
     intl: {
@@ -226,6 +225,7 @@ test('renders a modal object list form component and changes its value from outs
 
   // set value prop to something else than the value before from outside the modal
   valueState = [{ external_link: 'https://duckduckgo.com' }];
+  console.log(jsx);
   rerender(jsx);
 
   // in the modal there should be just a single item with the link: https://duckduckgo.com
@@ -246,7 +246,8 @@ test('renders a modal object list form component and changes its value from outs
   let st = mc.scrollTop;
 
   // the modal has scrolled to the bottom automatically?
-  console.log('st', st, 'sh', sh);
+  // both st and sh variables are 0 in jsdom environment, so it is useless here
+  // console.log('st', st, 'sh', sh);
   expect(st).toEqual(sh);
 
   // TODO: test props (just render, separate tests): open, title, className,

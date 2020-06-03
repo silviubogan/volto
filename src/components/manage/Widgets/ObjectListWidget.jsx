@@ -143,9 +143,9 @@ export const ModalObjectListForm = injectIntl((props) => {
     setStateValue(value);
   }, [value]);
 
-  return (
+  let jsx = (
     <Modal open={open} className={className}>
-      <Header>{title}</Header>
+      <Modal.Header>{title}</Modal.Header>
       <Modal.Content scrolling>
         <div ref={modalContentRef} data-testid="modal-content">
           <FlatObjectList
@@ -211,6 +211,8 @@ export const ModalObjectListForm = injectIntl((props) => {
       </Modal.Actions>
     </Modal>
   );
+
+  return jsx;
 });
 
 export const ObjectListWidget = injectIntl(

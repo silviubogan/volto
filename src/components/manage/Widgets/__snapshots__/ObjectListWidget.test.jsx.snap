@@ -609,7 +609,7 @@ exports[`renders a flat object list component with an item 3`] = `
 </DocumentFragment>
 `;
 
-exports[`renders a modal object list form component and changes its value from outside, the changes are reflected in the modal 1`] = `<DocumentFragment />`;
+exports[`renders a modal object list form component and tests it in various ways 1`] = `<DocumentFragment />`;
 
 exports[`renders an object list widget component 1`] = `
 <div
@@ -672,7 +672,8 @@ exports[`renders an object list widget component 1`] = `
         >
           <button
             aria-label="Edit"
-            className="item ui noborder button"
+            className="ui button item ui noborder button"
+            data-testid="big-pen-button"
             onClick={[Function]}
             title="Edit"
           >
@@ -684,7 +685,7 @@ exports[`renders an object list widget component 1`] = `
           </button>
           <button
             aria-label="Delete"
-            className="item ui noborder button"
+            className="ui button item ui noborder button"
             onClick={[Function]}
             title="Delete"
           >
@@ -695,30 +696,6 @@ exports[`renders an object list widget component 1`] = `
             />
           </button>
         </div>
-        <button
-          className="ui button"
-          data-testid="big-pen-button"
-          onClick={[Function]}
-        >
-          <svg
-            className="icon"
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": undefined,
-              }
-            }
-            onClick={null}
-            style={
-              Object {
-                "fill": "currentColor",
-                "height": "18px",
-                "width": "auto",
-              }
-            }
-            viewBox=""
-            xmlns=""
-          />
-        </button>
       </div>
     </div>
     <div
@@ -792,7 +769,8 @@ exports[`renders an object list widget component and changes its value by clicki
           >
             <button
               aria-label="Edit"
-              class="item ui noborder button"
+              class="ui button item ui noborder button"
+              data-testid="big-pen-button"
               title="Edit"
             >
               <i
@@ -802,7 +780,7 @@ exports[`renders an object list widget component and changes its value by clicki
             </button>
             <button
               aria-label="Delete"
-              class="item ui noborder button"
+              class="ui button item ui noborder button"
               title="Delete"
             >
               <i
@@ -811,17 +789,6 @@ exports[`renders an object list widget component and changes its value by clicki
               />
             </button>
           </div>
-          <button
-            class="ui button"
-            data-testid="big-pen-button"
-          >
-            <svg
-              class="icon"
-              style="height: 18px; width: auto; fill: currentColor;"
-              viewBox=""
-              xmlns=""
-            />
-          </button>
         </div>
       </div>
       <div
@@ -899,7 +866,8 @@ exports[`renders an object list widget component and changes its value by clicki
           >
             <button
               aria-label="Edit"
-              class="item ui noborder button"
+              class="ui button item ui noborder button"
+              data-testid="big-pen-button"
               title="Edit"
             >
               <i
@@ -909,7 +877,7 @@ exports[`renders an object list widget component and changes its value by clicki
             </button>
             <button
               aria-label="Delete"
-              class="item ui noborder button"
+              class="ui button item ui noborder button"
               title="Delete"
             >
               <i
@@ -918,17 +886,6 @@ exports[`renders an object list widget component and changes its value by clicki
               />
             </button>
           </div>
-          <button
-            class="ui button"
-            data-testid="big-pen-button"
-          >
-            <svg
-              class="icon"
-              style="height: 18px; width: auto; fill: currentColor;"
-              viewBox=""
-              xmlns=""
-            />
-          </button>
         </div>
       </div>
       <div
