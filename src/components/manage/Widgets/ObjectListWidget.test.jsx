@@ -8,6 +8,7 @@ import ObjectListWidget, { FlatObjectList } from './ObjectListWidget';
 
 const mockStore = configureStore();
 
+// TODO: what about localized schemas?
 const LinkSchema = {
   title: 'Link',
   fieldsets: [
