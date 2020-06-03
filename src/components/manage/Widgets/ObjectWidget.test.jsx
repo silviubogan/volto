@@ -60,7 +60,7 @@ test('renders an object widget component with clicks on each tab in root level t
     },
   });
 
-  const { getByText, asFragment, container } = render(
+  const { getByText, asFragment } = render(
     <Provider store={store}>
       <ObjectWidget
         id="my-widget"
@@ -72,48 +72,15 @@ test('renders an object widget component with clicks on each tab in root level t
     </Provider>,
   );
 
-  // await waitForDomChange({
-  //   mutationObserverOptions: {
-  //     subtree: true,
-  //     childList: true,
-  //     attributes: true,
-  //     characterData: true,
-  //   },
-  // });
+  // first tab snapshot
+  expect(asFragment()).toMatchSnapshot();
 
-  // fireEvent.click(getByText('Internal'));
-
-  // await waitForDomChange({
-  //   mutationObserverOptions: {
-  //     subtree: true,
-  //     childList: true,
-  //     attributes: true,
-  //     characterData: true,
-  //   },
-  // });
-
+  // second tab snapshot
   fireEvent.click(getByText('External'));
+  expect(asFragment()).toMatchSnapshot();
 
-  await waitForDomChange({
-    mutationObserverOptions: {
-      subtree: true,
-      childList: true,
-      attributes: true,
-      characterData: true,
-    },
-  });
-
+  // third tab snapshot
   fireEvent.click(getByText('Email'));
-
-  await waitForDomChange({
-    mutationObserverOptions: {
-      subtree: true,
-      childList: true,
-      attributes: true,
-      characterData: true,
-    },
-  });
-
   expect(asFragment()).toMatchSnapshot();
 });
 

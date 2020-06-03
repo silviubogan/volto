@@ -7,6 +7,146 @@ exports[`renders an object widget component with clicks on each tab in root leve
       class="ui attached tabular menu"
     >
       <a
+        class="active item"
+      >
+        Internal
+      </a>
+      <a
+        class="item"
+      >
+        External
+      </a>
+      <a
+        class="item"
+      >
+        Email
+      </a>
+    </div>
+    <div
+      class="ui bottom attached segment active tab"
+    >
+      <div
+        class="inline field text"
+        id="field-internal_link"
+      >
+        <div
+          class="ui grid"
+        >
+          <div
+            class="stretched row"
+          >
+            <div
+              class="four wide column"
+            >
+              <div
+                class="wrapper"
+              >
+                <label
+                  for="field-internal_link"
+                >
+                  Internal link
+                </label>
+              </div>
+            </div>
+            <div
+              class="eight wide column"
+            >
+              <div
+                class="ui input"
+              >
+                <input
+                  id="field-internal_link"
+                  name="internal_link"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`renders an object widget component with clicks on each tab in root level to load all of them 2`] = `
+<DocumentFragment>
+  <div>
+    <div
+      class="ui attached tabular menu"
+    >
+      <a
+        class="item"
+      >
+        Internal
+      </a>
+      <a
+        class="active item"
+      >
+        External
+      </a>
+      <a
+        class="item"
+      >
+        Email
+      </a>
+    </div>
+    <div
+      class="ui bottom attached segment active tab"
+    >
+      <div
+        class="inline field text"
+        id="field-external_link"
+      >
+        <div
+          class="ui grid"
+        >
+          <div
+            class="stretched row"
+          >
+            <div
+              class="four wide column"
+            >
+              <div
+                class="wrapper"
+              >
+                <label
+                  for="field-external_link"
+                >
+                  External URL (can be relative within this site or absolute if it starts with http:// or https://)
+                </label>
+              </div>
+            </div>
+            <div
+              class="eight wide column"
+            >
+              <div
+                class="ui input"
+              >
+                <input
+                  id="field-external_link"
+                  name="external_link"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`renders an object widget component with clicks on each tab in root level to load all of them 3`] = `
+<DocumentFragment>
+  <div>
+    <div
+      class="ui attached tabular menu"
+    >
+      <a
         class="item"
       >
         Internal
