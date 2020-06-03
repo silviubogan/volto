@@ -103,6 +103,17 @@ export const FlatObjectList = injectIntl(
   },
 );
 
+export const useScrollToBottomAutomatically = (modalContentRef, stateValue) => {
+  React.useEffect(() => {
+    if (modalContentRef.current) {
+      // console.log('typeof:', typeof modalContentRef.current);
+      modalContentRef.current.scrollIntoView({
+        block: 'end',
+      });
+    }
+  }, [modalContentRef, stateValue]);
+};
+
 export const ModalObjectListForm = injectIntl((props) => {
   const {
     open,
@@ -118,13 +129,7 @@ export const ModalObjectListForm = injectIntl((props) => {
   const [stateValue, setStateValue] = useState(value);
   const modalContentRef = React.useRef(null);
 
-  React.useEffect(() => {
-    if (modalContentRef.current) {
-      modalContentRef.current.scrollIntoView({
-        block: 'end',
-      });
-    }
-  }, [modalContentRef, stateValue]);
+  useScrollToBottomAutomatically(modalContentRef, stateValue);
 
   const createEmpty = React.useCallback(() => {
     return {};
@@ -142,7 +147,7 @@ export const ModalObjectListForm = injectIntl((props) => {
     <Modal open={open} className={className}>
       <Header>{title}</Header>
       <Modal.Content scrolling>
-        <div ref={modalContentRef}>
+        <div ref={modalContentRef} data-testid="modal-content">
           <FlatObjectList
             id={id}
             value={stateValue}
