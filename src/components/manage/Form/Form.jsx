@@ -856,33 +856,6 @@ class Form extends Component {
                 onSubmit={this.onSubmit}
                 error={keys(this.state.errors).length > 0}
               >
-                <Segment>
-                  <ObjectListWidget
-                    id={`my-widget`}
-                    schema={LinkSchema}
-                    title="My Widget"
-                    onChange={(id, v) => {
-                      this.setState(() => ({ testData: v }));
-                    }}
-                    error={{}}
-                    value={this.state.testData}
-                    required={true}
-                    fieldSet={{}}
-                    description="My description"
-                    onDelete={() => {}}
-                    onEdit={() => {}}
-                  />
-                  <Button
-                    onClick={(e) => {
-                      this.setState(() => ({
-                        testData: [{ external_link: 'https://duckduckgo.com' }],
-                      }));
-                      e.preventDefault();
-                    }}
-                  >
-                    Click me !
-                  </Button>
-                </Segment>
                 {schema &&
                   map(schema.fieldsets, (item) => [
                     <Segment secondary attached key={item.title}>

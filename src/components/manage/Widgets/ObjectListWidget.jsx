@@ -52,7 +52,7 @@ const messages = defineMessages({
   },
 });
 
-const FlatObjectList = injectIntl(
+export const FlatObjectList = injectIntl(
   ({ id, value = [], schema, onChange, intl }) => {
     return (
       <div className="objectlist-widget-content">
@@ -104,7 +104,7 @@ const FlatObjectList = injectIntl(
   },
 );
 
-const ModalObjectListForm = injectIntl((props) => {
+export const ModalObjectListForm = injectIntl((props) => {
   const {
     open,
     title,
@@ -209,124 +209,128 @@ const ModalObjectListForm = injectIntl((props) => {
   );
 });
 
-const ObjectListWidget = (props) => {
-  const {
-    id,
-    value = [],
-    schema,
-    onChange,
-    required,
-    error,
-    fieldSet,
-    title,
-    description,
-    onDelete,
-    onEdit,
-  } = props;
+export const ObjectListWidget = injectIntl(
+  (props) => {
+    const {
+      id,
+      value = [],
+      schema,
+      onChange,
+      required,
+      error,
+      fieldSet,
+      title,
+      description,
+      onDelete,
+      onEdit,
+    } = props;
 
-  const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(false);
 
-  return (
-    <>
-      <ModalObjectListForm
-        id={id}
-        schema={schema}
-        title={title}
-        value={value}
-        open={open}
-        onSave={(id, val) => {
-          onChange(id, val);
-          setOpen(false);
-        }}
-        onCancel={() => {
-          setOpen(false);
-        }}
-      />
-      <Form.Field
-        onClick={(e) => {
-          e.preventDefault();
-        }}
-        inline
-        required={required}
-        error={(error || []).length > 0}
-        className={description ? 'help text' : 'text'}
-        id={`${fieldSet || 'field'}-${id}`}
-      >
-        <Grid>
-          <Grid.Row stretched>
-            <Grid.Column width="4">
-              <div className="wrapper">
-                <label htmlFor={`field-${id}`}>
-                  {onEdit && (
-                    <i
-                      aria-hidden="true"
-                      className="grey bars icon drag handle"
-                    />
-                  )}
-                  {title}
-                </label>
-              </div>
-            </Grid.Column>
-            <Grid.Column width="8">
-              <Input
-                id={`field-${id}`}
-                name={id}
-                disabled={true}
-                icon={penSVG}
-                value={props.intl.formatMessage(messages.count, {
-                  count: value.length,
-                })}
-              />
-
-              {onEdit && (
-                <div className="toolbar">
-                  <button
-                    aria-label={props.intl.formatMessage(messages.edit)}
-                    title={props.intl.formatMessage(messages.edit)}
-                    className="item ui noborder button"
-                    onClick={() => onEdit(id, schema)}
-                  >
-                    <Icon name="write square" size="large" color="blue" />
-                  </button>
-                  <button
-                    aria-label={props.intl.formatMessage(messages.delete)}
-                    title={props.intl.formatMessage(messages.delete)}
-                    className="item ui noborder button"
-                    onClick={() => onDelete(id)}
-                  >
-                    <Icon name="close" size="large" color="red" />
-                  </button>
-                </div>
-              )}
-
-              <Button
-                onClick={() => {
-                  setOpen(true);
-                }}
-              >
-                {/* TODO: instead of px use rem if possible */}
-                <VoltoIcon name={penSVG} size="18px" />
-              </Button>
-
-              {map(error, (message) => (
-                <Label key={message} basic color="red" pointing>
-                  {message}
-                </Label>
-              ))}
-            </Grid.Column>
-          </Grid.Row>
-          {description && (
+    return (
+      <>
+        <ModalObjectListForm
+          id={id}
+          schema={schema}
+          title={title}
+          value={value}
+          open={open}
+          onSave={(id, val) => {
+            onChange(id, val);
+            setOpen(false);
+          }}
+          onCancel={() => {
+            setOpen(false);
+          }}
+        />
+        <Form.Field
+          onClick={(e) => {
+            e.preventDefault();
+          }}
+          inline
+          required={required}
+          error={(error || []).length > 0}
+          className={description ? 'help text' : 'text'}
+          id={`${fieldSet || 'field'}-${id}`}
+        >
+          <Grid>
             <Grid.Row stretched>
-              <Grid.Column stretched width="12">
-                <p className="help">{description}</p>
+              <Grid.Column width="4">
+                <div className="wrapper">
+                  <label htmlFor={`field-${id}`}>
+                    {onEdit && (
+                      <i
+                        aria-hidden="true"
+                        className="grey bars icon drag handle"
+                      />
+                    )}
+                    {title}
+                  </label>
+                </div>
+              </Grid.Column>
+              <Grid.Column width="8">
+                <Input
+                  id={`field-${id}`}
+                  name={id}
+                  disabled={true}
+                  icon={penSVG}
+                  value={props.intl.formatMessage(messages.count, {
+                    count: value.length,
+                  })}
+                />
+
+                {onEdit && (
+                  <div className="toolbar">
+                    <button
+                      aria-label={props.intl.formatMessage(messages.edit)}
+                      title={props.intl.formatMessage(messages.edit)}
+                      className="item ui noborder button"
+                      onClick={() => onEdit(id, schema)}
+                    >
+                      <Icon name="write square" size="large" color="blue" />
+                    </button>
+                    <button
+                      aria-label={props.intl.formatMessage(messages.delete)}
+                      title={props.intl.formatMessage(messages.delete)}
+                      className="item ui noborder button"
+                      onClick={() => onDelete(id)}
+                    >
+                      <Icon name="close" size="large" color="red" />
+                    </button>
+                  </div>
+                )}
+
+                <Button
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                  data-testid="big-pen-button"
+                >
+                  {/* TODO: instead of px use rem if possible */}
+                  <VoltoIcon name={penSVG} size="18px" />
+                </Button>
+
+                {map(error, (message) => (
+                  <Label key={message} basic color="red" pointing>
+                    {message}
+                  </Label>
+                ))}
               </Grid.Column>
             </Grid.Row>
-          )}
-        </Grid>
-      </Form.Field>
-    </>
-  );
-};
+            {description && (
+              <Grid.Row stretched>
+                <Grid.Column stretched width="12">
+                  <p className="help">{description}</p>
+                </Grid.Column>
+              </Grid.Row>
+            )}
+          </Grid>
+        </Form.Field>
+      </>
+    );
+  },
+  { forwardRef: true },
+);
 
 /**
  * Property types.
@@ -356,4 +360,4 @@ ObjectListWidget.defaultProps = {
   value: [],
 };
 
-export default injectIntl(ObjectListWidget, { forwardRef: true });
+export default ObjectListWidget;
