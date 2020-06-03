@@ -105,8 +105,7 @@ export const FlatObjectList = injectIntl(
 
 export const useScrollToBottomAutomatically = (modalContentRef, stateValue) => {
   React.useEffect(() => {
-    if (modalContentRef.current) {
-      // console.log('typeof:', typeof modalContentRef.current);
+    if (modalContentRef.current && modalContentRef.current.scrollIntoView) {
       modalContentRef.current.scrollIntoView({
         block: 'end',
       });
@@ -124,6 +123,7 @@ export const ModalObjectListForm = injectIntl((props) => {
     schema,
     value = [],
     id,
+    intl,
   } = props;
 
   const [stateValue, setStateValue] = useState(value);
@@ -166,10 +166,10 @@ export const ModalObjectListForm = injectIntl((props) => {
           floated="left"
           size="big"
           className="icon"
-          title={props.intl.formatMessage(messages.add, {
+          title={intl.formatMessage(messages.add, {
             schemaTitle: schema.title,
           })}
-          aria-label={props.intl.formatMessage(messages.add, {
+          aria-label={intl.formatMessage(messages.add, {
             schemaTitle: schema.title,
           })}
           onClick={() => {
@@ -187,8 +187,8 @@ export const ModalObjectListForm = injectIntl((props) => {
           primary
           floated="right"
           icon="arrow right"
-          title={props.intl.formatMessage(messages.save)}
-          aria-label={props.intl.formatMessage(messages.save)}
+          title={intl.formatMessage(messages.save)}
+          aria-label={intl.formatMessage(messages.save)}
           size="big"
           onClick={() => {
             onSave(id, stateValue);
@@ -199,8 +199,8 @@ export const ModalObjectListForm = injectIntl((props) => {
           circular
           secondary
           icon="remove"
-          title={props.intl.formatMessage(messages.cancel)}
-          aria-label={props.intl.formatMessage(messages.cancel)}
+          title={intl.formatMessage(messages.cancel)}
+          aria-label={intl.formatMessage(messages.cancel)}
           floated="right"
           size="big"
           onClick={() => {
@@ -227,6 +227,7 @@ export const ObjectListWidget = injectIntl(
       description,
       onDelete,
       onEdit,
+      intl,
     } = props;
 
     const [open, setOpen] = useState(false);
@@ -278,7 +279,7 @@ export const ObjectListWidget = injectIntl(
                   name={id}
                   disabled={true}
                   icon={penSVG}
-                  value={props.intl.formatMessage(messages.count, {
+                  value={intl.formatMessage(messages.count, {
                     count: value.length,
                   })}
                 />
@@ -286,16 +287,16 @@ export const ObjectListWidget = injectIntl(
                 {onEdit && (
                   <div className="toolbar">
                     <button
-                      aria-label={props.intl.formatMessage(messages.edit)}
-                      title={props.intl.formatMessage(messages.edit)}
+                      aria-label={intl.formatMessage(messages.edit)}
+                      title={intl.formatMessage(messages.edit)}
                       className="item ui noborder button"
                       onClick={() => onEdit(id, schema)}
                     >
                       <Icon name="write square" size="large" color="blue" />
                     </button>
                     <button
-                      aria-label={props.intl.formatMessage(messages.delete)}
-                      title={props.intl.formatMessage(messages.delete)}
+                      aria-label={intl.formatMessage(messages.delete)}
+                      title={intl.formatMessage(messages.delete)}
                       className="item ui noborder button"
                       onClick={() => onDelete(id)}
                     >
