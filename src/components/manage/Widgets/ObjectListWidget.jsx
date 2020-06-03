@@ -340,11 +340,11 @@ export const ObjectListWidget = injectIntl(
 ObjectListWidget.propTypes = {
   id: PropTypes.string.isRequired,
   schema: PropTypes.object.isRequired,
-  error: PropTypes.any.isRequired,
+  error: PropTypes.any,
   value: PropTypes.array,
   onChange: PropTypes.func.isRequired,
   required: PropTypes.bool.isRequired,
-  fieldSet: PropTypes.any.isRequired,
+  fieldSet: PropTypes.string,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   onDelete: PropTypes.func.isRequired,

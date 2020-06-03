@@ -68,7 +68,7 @@ test('renders an object list widget component', () => {
           { external_link: 'https://wikipedia.org' },
         ]}
         required={true}
-        fieldSet={{}}
+        fieldSet="my-field-set"
         description="My description"
         onDelete={() => {}}
         onEdit={() => {}}
@@ -94,7 +94,7 @@ test('renders an object list widget component and changes its value by clicking 
     { external_link: 'https://wikipedia.org' },
   ];
 
-  const { getByText, asFragment, rerender, findByTestId } = render(
+  let jsx = (
     <Provider store={store}>
       <>
         <ObjectListWidget
@@ -103,12 +103,11 @@ test('renders an object list widget component and changes its value by clicking 
           title="My Widget"
           onChange={(id, v) => {
             valueState = v;
-            rerender();
+            rerender(jsx);
           }}
           error={{}}
           value={valueState}
           required={true}
-          fieldSet={{}}
           description="My description"
           onDelete={() => {}}
           onEdit={() => {}}
@@ -116,23 +115,27 @@ test('renders an object list widget component and changes its value by clicking 
         <button
           onClick={(e) => {
             valueState = [{ external_link: 'https://duckduckgo.com' }];
-            rerender();
+            rerender(jsx);
             e.preventDefault();
           }}
         >
           Click me !
         </button>
       </>
-    </Provider>,
+    </Provider>
+  );
+
+  const { getByText, asFragment, rerender, getByTestId, getAllByText } = render(
+    jsx,
   );
 
   expect(asFragment()).toMatchSnapshot();
 
   fireEvent.click(getByText('Click me !'));
 
-  fireEvent.click(await findByTestId('big-pen-button'));
+  fireEvent.click(getByTestId('big-pen-button'));
 
-  fireEvent.click(getByText('External'));
+  fireEvent.click(getAllByText('External')[0]);
 
   expect(asFragment()).toMatchSnapshot();
 });
