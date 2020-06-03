@@ -2,12 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import configureStore from 'redux-mock-store';
 import { Provider } from 'react-intl-redux';
-import {
-  render,
-  fireEvent,
-  waitForElement,
-  waitForDomChange,
-} from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import ObjectWidget from './ObjectWidget';
 
