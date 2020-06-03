@@ -4,7 +4,7 @@ import configureStore from 'redux-mock-store';
 import { Provider } from 'react-intl-redux';
 import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import ObjectListWidget from './ObjectListWidget';
+import ObjectListWidget, { FlatObjectList } from './ObjectListWidget';
 
 const mockStore = configureStore();
 
@@ -131,11 +131,52 @@ test('renders an object list widget component and changes its value by clicking 
 
   expect(asFragment()).toMatchSnapshot();
 
+  // click the button which changes data outside of modal
   fireEvent.click(getByText('Click me !'));
 
+  // open the modal
   fireEvent.click(getByTestId('big-pen-button'));
 
+  // click on the first External tab
   fireEvent.click(getAllByText('External')[0]);
 
+  expect(asFragment()).toMatchSnapshot();
+});
+
+test('renders a flat object list component with an item', async () => {
+  const store = mockStore({
+    search: {},
+    intl: {
+      locale: 'en',
+      messages: {},
+    },
+  });
+
+  let valueState = [
+    { external_link: 'https://ddg.gg' },
+    { external_link: 'https://wikipedia.org' },
+  ];
+
+  let jsx = (
+    <Provider store={store}>
+      <FlatObjectList id={`my-widget`} schema={LinkSchema} value={valueState} />
+    </Provider>
+  );
+
+  const { asFragment, getAllByText } = render(jsx);
+
+  // verify the first tab
+  expect(asFragment()).toMatchSnapshot();
+
+  // load second tab in first item
+  fireEvent.click(getAllByText('External')[0]);
+
+  // verify the second tab in the first item
+  expect(asFragment()).toMatchSnapshot();
+
+  // load second tab in second item
+  fireEvent.click(getAllByText('External')[1]);
+
+  // verify the second tab in the second item
   expect(asFragment()).toMatchSnapshot();
 });
