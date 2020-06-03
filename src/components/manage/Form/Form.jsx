@@ -851,27 +851,27 @@ class Form extends Component {
             <Portal
               node={__CLIENT__ && document.getElementById('sidebar-metadata')}
             >
-              <ObjectListWidget
-                id="my-widget"
-                schema={LinkSchema}
-                title="My Widget"
-                onChange={() => { }}
-                error={{}}
-                value={[
-                  { external_link: 'https://dgg.gg' },
-                  { external_link: 'https://wikipedia.org' },
-                ]}
-                required={true}
-                fieldSet="my-field-set"
-                description="My description"
-                onDelete={() => { }}
-                onEdit={() => { }}
-              />
               <UiForm
                 method="post"
                 onSubmit={this.onSubmit}
                 error={keys(this.state.errors).length > 0}
               >
+                <ObjectListWidget
+                  id="my-widget"
+                  schema={LinkSchema}
+                  title="My Widget"
+                  onChange={() => { }}
+                  error={{}}
+                  value={[
+                    { external_link: 'https://dgg.gg' },
+                    { external_link: 'https://wikipedia.org' },
+                  ]}
+                  required={true}
+                  fieldSet="my-field-set"
+                  description="My description"
+                  onDelete={() => { }}
+                  onEdit={() => { }}
+                />
                 {schema &&
                   map(schema.fieldsets, (item) => [
                     <Segment secondary attached key={item.title}>

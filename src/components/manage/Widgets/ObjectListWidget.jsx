@@ -286,34 +286,31 @@ export const ObjectListWidget = injectIntl(
 
                 {onEdit && (
                   <div className="toolbar">
-                    <button
+                    <Button
                       aria-label={intl.formatMessage(messages.edit)}
                       title={intl.formatMessage(messages.edit)}
                       className="item ui noborder button"
-                      onClick={() => onEdit(id, schema)}
+                      data-testid="big-pen-button"
+                      onClick={() => {
+                        setOpen(true);
+                        onEdit(id, schema);
+                      }}
                     >
                       <Icon name="write square" size="large" color="blue" />
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       aria-label={intl.formatMessage(messages.delete)}
                       title={intl.formatMessage(messages.delete)}
                       className="item ui noborder button"
-                      onClick={() => onDelete(id)}
+                      onClick={() => {
+                        onChange(id, []);
+                        onDelete(id);
+                      }}
                     >
                       <Icon name="close" size="large" color="red" />
-                    </button>
+                    </Button>
                   </div>
                 )}
-
-                <Button
-                  onClick={() => {
-                    setOpen(true);
-                  }}
-                  data-testid="big-pen-button"
-                >
-                  {/* TODO: instead of px use rem if possible */}
-                  <VoltoIcon name={penSVG} size="18px" />
-                </Button>
 
                 {map(error, (message) => (
                   <Label key={message} basic color="red" pointing>
