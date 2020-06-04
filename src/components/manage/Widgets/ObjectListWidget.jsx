@@ -113,7 +113,7 @@ export const useScrollToBottomAutomatically = (modalContentRef, stateValue) => {
   }, [modalContentRef, stateValue]);
 };
 
-export const ModalObjectListForm = injectIntl((props) => {
+export const ModalObjectListForm = /*injectIntl(*/(props) => {
   const {
     open,
     title,
@@ -126,28 +126,29 @@ export const ModalObjectListForm = injectIntl((props) => {
     intl,
   } = props;
 
-  const [stateValue, setStateValue] = useState(value);
-  const modalContentRef = React.useRef(null);
+  // const [stateValue, setStateValue] = useState(value);
+  // const modalContentRef = React.useRef(null);
 
-  useScrollToBottomAutomatically(modalContentRef, stateValue);
+  // useScrollToBottomAutomatically(modalContentRef, stateValue);
 
-  const createEmpty = React.useCallback(() => {
-    return {};
-  }, []);
+  // const createEmpty = React.useCallback(() => {
+  //   return {};
+  // }, []);
 
-  /**
-   * For when `value` is updated outside of the Modal and the Modal is reopened after that.
-   * (The current behaviour is that the contents of the reopened Modal are not updated.)
-   **/
-  React.useEffect(() => {
-    setStateValue(value);
-  }, [value]);
+  // /**
+  //  * For when `value` is updated outside of the Modal and the Modal is reopened after that.
+  //  * (The current behaviour is that the contents of the reopened Modal are not updated.)
+  //  **/
+  // React.useEffect(() => {
+  //   setStateValue(value);
+  // }, [value]);
 
   let jsx = (
-    <Modal open={open} className={className}>
-      <Modal.Header>{title}</Modal.Header>
-      <Modal.Content scrolling>
-        <div ref={modalContentRef} data-testid="modal-content">
+    <Modal content="XYZ" open={true}>
+      {/* <Modal.Header>{title}</Modal.Header> */}
+      {/* <Modal.Content scrolling> */}
+        {/* abcdedsfasdafsdfdsf */}
+        {/* <div ref={modalContentRef} data-testid="modal-content">
           <FlatObjectList
             id={id}
             value={stateValue}
@@ -156,10 +157,10 @@ export const ModalObjectListForm = injectIntl((props) => {
               setStateValue(v);
             }}
           />
-        </div>
-      </Modal.Content>
-      <Modal.Actions>
-        <Button
+        </div> */}
+      {/* </Modal.Content> */}
+      {/* <Modal.Actions> */}
+        {/* <Button
           primary
           basic
           circular
@@ -176,7 +177,7 @@ export const ModalObjectListForm = injectIntl((props) => {
             setStateValue([...stateValue, createEmpty()]);
           }}
         >
-          {/* TODO: instead of px use rem if possible */}
+          {/* TODO: instead of px use rem if possible/}
           <VoltoIcon size="18px" name={addSVG} />
           Add {schema.title}
         </Button>
@@ -207,13 +208,13 @@ export const ModalObjectListForm = injectIntl((props) => {
             setStateValue([...value]);
             onCancel();
           }}
-        />
-      </Modal.Actions>
+        /> */}
+      {/* </Modal.Actions> */}
     </Modal>
   );
 
   return jsx;
-});
+}; /*)*/
 
 export const ObjectListWidget = injectIntl(
   (props) => {
