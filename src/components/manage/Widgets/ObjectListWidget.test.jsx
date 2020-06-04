@@ -249,7 +249,63 @@ test('renders a modal object list form component and tests it in various ways', 
   // both st and sh variables are 0 in jsdom environment, so it is useless here
   // console.log('st', st, 'sh', sh);
   expect(st).toEqual(sh);
+});
 
-  // TODO: test props (just render, separate tests): open, title, className,
-  // onSave, onCancel, schema, value, id
+test('renders a modal object list form component and tests it in other various ways', () => {
+  const store = mockStore({
+    search: {},
+    intl: {
+      locale: 'en',
+      messages: {},
+    },
+  });
+
+  let valueState = [
+    { external_link: 'https://ddg.gg' },
+    { external_link: 'https://wikipedia.org' },
+  ];
+
+  let openState = true;
+
+  let jsx = (
+    <Provider store={store}>
+      <ModalObjectListForm
+        id="my-test-widget"
+        schema={LinkSchema}
+        title="My Modal Title"
+        data-testid="my-modal"
+        value={valueState}
+        className="my-test-widget-class"
+        open={openState}
+        onSave={(id, val) => {
+          openState = false;
+          valueState = val;
+          rerender(jsx);
+        }}
+        onCancel={() => {
+          openState = false;
+          rerender(jsx);
+        }}
+      />
+    </Provider>
+  );
+
+  const { asFragment, getByTitle, getByText, rerender } = render(jsx);
+
+  fireEvent.click(getByTitle('Cancel'));
+
+  expect(openState).toEqual(false);
+
+  openState = true;
+  rerender(jsx);
+
+  fireEvent.click(getByText('Add Link'));
+
+  fireEvent.click(getByTitle('Save'));
+
+  expect(openState).toEqual(false);
+  expect(valueState.length).toEqual(3);
+
+  // actual result: empty snapshot because of https://github.com/Semantic-Org/Semantic-UI-React/issues/3959
+  expect(asFragment()).toMatchSnapshot();
 });

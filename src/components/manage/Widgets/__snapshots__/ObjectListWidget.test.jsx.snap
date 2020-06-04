@@ -609,6 +609,8 @@ exports[`renders a flat object list component with an item 3`] = `
 </DocumentFragment>
 `;
 
+exports[`renders a modal object list form component and tests it in other various ways 1`] = `<DocumentFragment />`;
+
 exports[`renders a modal object list form component and tests it in various ways 1`] = `<DocumentFragment />`;
 
 exports[`renders an object list widget component 1`] = `
