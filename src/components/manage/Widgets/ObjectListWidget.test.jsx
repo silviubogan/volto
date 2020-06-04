@@ -225,10 +225,10 @@ test('renders a modal object list form component and tests it in various ways', 
 
   // set value prop to something else than the value before from outside the modal
   valueState = [{ external_link: 'https://duckduckgo.com' }];
-  console.log(jsx);
   rerender(jsx);
 
   // in the modal there should be just a single item with the link: https://duckduckgo.com
+  // (actual result: empty snapshot because of https://github.com/Semantic-Org/Semantic-UI-React/issues/3959)
   expect(asFragment()).toMatchSnapshot();
 
   window.HTMLElement.prototype.scrollIntoView = jest.fn();
