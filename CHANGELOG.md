@@ -15,6 +15,8 @@
 
 ### Bugfix
 
+- Fix styling and use of csss classes in ``InlineForm.jsx`` @tiberiuichim
+
 ### Internal
 
 - Fix formatting of ``src/server.jsx`` @tiberiuichim
