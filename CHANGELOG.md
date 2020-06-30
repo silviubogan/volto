@@ -11,6 +11,8 @@
 
 - Allow JSON API calls to made to third-party servers @tiberiuichim
 
+- New `object` and `object_list` widgets (classes `ObjectWidget`, `ObjectListWidget`) @silviubogan
+
 ### Bugfix
 
 ### Internal

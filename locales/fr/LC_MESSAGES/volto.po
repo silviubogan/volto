@@ -28,6 +28,10 @@ msgstr ""
 "X-Is-Fallback-For: fr-be fr-ca fr-lu fr-mc fr-ch fr-fr\n"
 "X-Generator: Poedit 2.2.3\n"
 
+#: components/manage/Widgets/ObjectListWidget
+msgid "A collection of {count} items"
+msgstr ""
+
 #: components/theme/Footer/Footer
 msgid "Accessibility"
 msgstr "Accessibilité"
@@ -117,6 +121,10 @@ msgstr "Ajouter un nouvel utilistateur"
 #: components/manage/Controlpanels/UsersControlpanel
 msgid "Add to Groups"
 msgstr "Ajouter aux groupes"
+
+#: components/manage/Widgets/ObjectListWidget
+msgid "Add {schemaTitle}"
+msgstr ""
 
 #: components/manage/Add/Add
 msgid "Add {type}"
@@ -225,6 +233,7 @@ msgstr "Nom du cache"
 #: components/manage/Form/Form
 #: components/manage/Form/ModalForm
 #: components/manage/Sharing/Sharing
+#: components/manage/Widgets/ObjectListWidget
 #: components/theme/Login/Login
 msgid "Cancel"
 msgstr "Annuler"
@@ -442,6 +451,7 @@ msgstr "Défaut"
 #: components/manage/Controlpanels/UsersControlpanelUser
 #: components/manage/Delete/Delete
 #: components/manage/Widgets/CheckboxWidget
+#: components/manage/Widgets/ObjectListWidget
 #: components/manage/Widgets/TextareaWidget
 #: components/manage/Widgets/TextWidget
 #: components/manage/Widgets/WysiwygWidget
@@ -545,6 +555,7 @@ msgstr "Les adresses e-mails ne correspondent pas."
 #: components/manage/Controlpanels/ModerateComments
 #: components/manage/Toolbar/Toolbar
 #: components/manage/Widgets/CheckboxWidget
+#: components/manage/Widgets/ObjectListWidget
 #: components/theme/Comments/Comments
 msgid "Edit"
 msgstr "Modifier"
@@ -1279,6 +1290,7 @@ msgstr "Rôles"
 #: components/manage/Form/Form
 #: components/manage/Form/ModalForm
 #: components/manage/Sharing/Sharing
+#: components/manage/Widgets/ObjectListWidget
 msgid "Save"
 msgstr "Sauvegarder"
 

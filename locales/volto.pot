@@ -13,6 +13,11 @@ msgstr ""
 "Preferred-Encodings: utf-8\n"
 "Domain: volto\n"
 
+#: components/manage/Widgets/ObjectListWidget
+# defaultMessage: A collection of {count} items
+msgid "A collection of {count} items"
+msgstr ""
+
 #: components/theme/Footer/Footer
 # defaultMessage: Accessibility
 msgid "Accessibility"
@@ -122,6 +127,11 @@ msgstr ""
 #: components/manage/Controlpanels/UsersControlpanel
 # defaultMessage: Add to Groups
 msgid "Add to Groups"
+msgstr ""
+
+#: components/manage/Widgets/ObjectListWidget
+# defaultMessage: Add {schemaTitle}
+msgid "Add {schemaTitle}"
 msgstr ""
 
 #: components/manage/Add/Add
@@ -250,6 +260,7 @@ msgstr ""
 #: components/manage/Form/Form
 #: components/manage/Form/ModalForm
 #: components/manage/Sharing/Sharing
+#: components/manage/Widgets/ObjectListWidget
 #: components/theme/Login/Login
 # defaultMessage: Cancel
 msgid "Cancel"
@@ -511,6 +522,7 @@ msgstr ""
 #: components/manage/Controlpanels/UsersControlpanelUser
 #: components/manage/Delete/Delete
 #: components/manage/Widgets/CheckboxWidget
+#: components/manage/Widgets/ObjectListWidget
 #: components/manage/Widgets/TextareaWidget
 #: components/manage/Widgets/TextWidget
 #: components/manage/Widgets/WysiwygWidget
@@ -635,6 +647,7 @@ msgstr ""
 #: components/manage/Controlpanels/ModerateComments
 #: components/manage/Toolbar/Toolbar
 #: components/manage/Widgets/CheckboxWidget
+#: components/manage/Widgets/ObjectListWidget
 #: components/theme/Comments/Comments
 # defaultMessage: Edit
 msgid "Edit"
@@ -1535,6 +1548,7 @@ msgstr ""
 #: components/manage/Form/Form
 #: components/manage/Form/ModalForm
 #: components/manage/Sharing/Sharing
+#: components/manage/Widgets/ObjectListWidget
 # defaultMessage: Save
 msgid "Save"
 msgstr ""
