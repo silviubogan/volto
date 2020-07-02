@@ -1,6 +1,6 @@
 # Change Log
 
-## 6.4.1 (unreleased)
+## 6.4.2 (unreleased)
 
 ### Breaking
 
@@ -13,9 +13,31 @@
 
 - New `object` and `object_list` widgets (classes `ObjectWidget`, `ObjectListWidget`) @silviubogan
 
+- Added default Export for the QuerystringWidget for the ListingBlock @steffenri
+
 ### Bugfix
 
 - Fix styling and use of csss classes in ``InlineForm.jsx`` @tiberiuichim
+
+### Internal
+
+- Fix formatting of ``src/server.jsx`` @tiberiuichim
+
+- Upgrade insecure packages `http-proxy`, `http-proxy-middleware` and `handlebars` @tiberiuichim
+
+## 6.4.1 (2020-07-01)
+
+### Breaking
+
+### Feature
+
+- Allow JSON API calls to made to third-party servers @tiberiuichim
+
+### Bugfix
+
+- Fix styling and use of csss classes in ``InlineForm.jsx`` @tiberiuichim
+
+- Fixing bug for Image Preview on upload @iFlameing
 
 ### Internal
 
@@ -31,6 +53,7 @@
 - Added uploading image preview in FileWidget @iFlameing
 - Allow custom express middleware declared with ``settings.expressMiddleware``. See [Customizing Express](docs/customizing/express.md) @tiberiuichim
 - Allow custom express middleware declared with ``settings.expressMiddleware``. See [Customizing Express](docs/source/customizing/express.md) @tiberiuichim
+- Allow custom express middleware declared with `settings.expressMiddleware`. See [Customizing Express](docs/source/customizing/express.md) @tiberiuichim
 
 ### Bugfix
 
