@@ -1,6 +1,16 @@
 # Change Log
 
-## 6.5.1 (unreleased)
+## 7.0.1 (unreleased)
+
+### Breaking
+
+### Feature
+
+### Bugfix
+
+### Internal
+
+## 7.0.0 (2020-07-06)
 
 ### Breaking
 
@@ -10,16 +20,14 @@
 
 - Addons configuration loading. You can now declare addons in the addons key of
   package.json and they'll be automatically loaded. @tiberiuichim @sneridagh
-
+- Addons can optionally include a `razzle.extend.js` file in their root. This
+  module needs to follow the same rules as the `razzle.config.js`. They change
+  the default Volto Razzle configuration, before it is passed to the Volto
+  project. @tiberiuichim @sneridagh
 
 ## 6.5.0 (2020-07-03)
 
 ### Feature
-
-- Addons configuration loading. You can now declare addons in the addons key of
-  package.json and they'll be automatically loaded. @tiberiuichim @sneridagh
-
-- Allow JSON API calls to made to third-party servers @tiberiuichim
 
 - New `object` and `object_list` widgets (classes `ObjectWidget`, `ObjectListWidget`) @silviubogan
 
@@ -35,8 +43,6 @@
 - Fix datepicker z-index @giuliaghisini
 
 ### Internal
-
-- Fix formatting of ``src/server.jsx`` @tiberiuichim
 
 - Upgrade insecure packages `http-proxy`, `http-proxy-middleware` and `handlebars` @tiberiuichim
 
@@ -64,10 +70,8 @@
 
 - Translated workflow state in contents @nzambello
 - Added item type as a tooltip in contents @nzambello
-- Added italian translations and translated array, token and select widget. @giuliaghisini
+- Added Italian translations and translated array, token and select widget. @giuliaghisini
 - Added uploading image preview in FileWidget @iFlameing
-- Allow custom express middleware declared with ``settings.expressMiddleware``. See [Customizing Express](docs/customizing/express.md) @tiberiuichim
-- Allow custom express middleware declared with ``settings.expressMiddleware``. See [Customizing Express](docs/source/customizing/express.md) @tiberiuichim
 - Allow custom express middleware declared with `settings.expressMiddleware`. See [Customizing Express](docs/source/customizing/express.md) @tiberiuichim
 
 ### Bugfix
@@ -119,8 +123,6 @@
 - Added internationalization for Romanian language @alecghica #1521
 - Support loading additional reducers from the `config.addonReducers` key,
   to allow addons to provide their own reducers @tiberiuichim
-- Added param 'wrapped' for widgets, to use widgets without form wrappers. @giuliaghisini
-- Added internationalization for Romanian language @alecghica #1521
 - Add a no brainer image sizing option, using scales. This will be vastly improved when
   we adopt srcsets. @sneridagh
 
