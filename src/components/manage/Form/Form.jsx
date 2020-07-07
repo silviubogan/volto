@@ -37,9 +37,9 @@ import dragSVG from '@plone/volto/icons/drag.svg';
 import {
   getBlocksFieldname,
   getBlocksLayoutFieldname,
+  difference,
   blockHasValue,
 } from '@plone/volto/helpers';
-import { difference } from '@plone/volto/helpers';
 
 import aheadSVG from '@plone/volto/icons/ahead.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';

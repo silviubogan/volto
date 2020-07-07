@@ -39,6 +39,7 @@
 - New `object` and `object_list` widgets (classes `ObjectWidget`, `ObjectListWidget`) @silviubogan
 
 - Added default Export for the QuerystringWidget for the ListingBlock @steffenri
+- The default block type (currently draftjs text) is now configurable @tiberiuichim @silviubogan
 
 ### Bugfix
 
