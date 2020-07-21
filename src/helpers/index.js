@@ -29,6 +29,7 @@ export {
 } from '@plone/volto/helpers/Content/Content';
 export {
   blockHasValue,
+  getBlocks,
   getBlocksFieldname,
   getBlocksLayoutFieldname,
   hasBlocksData,
