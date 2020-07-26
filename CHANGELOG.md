@@ -9,6 +9,9 @@
 - Added Placeholder attribute to Textwidget and TextAreaWidget @iFlameing
 - Allow addons to provide less files @tiberiuichim
 
+- Added Placeholder attribute to Textwidget and TextAreaWidget @iFlameing
+- Separate the Form.jsx state in its own component exposed as a context. This enables clean multi-block editing from other blocks, exposes the form state to widgets and many other advanced scenarios. @tiberiuichim
+
 ### Bugfix
 
 - Avoid React hydration complaining about mismatched server output in toolbar. In component rendering, replaced the use of `__CLIENT__` with a state-stored `isClient`, as that is more correct. @tiberiuichim
