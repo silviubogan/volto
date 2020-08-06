@@ -802,131 +802,119 @@ class Form extends Component {
               // but draftJS don't like it much and the hydration gets messed up
               this.state.isClient && (
                 <div className="ui container">
-                  <DragDropContext
+                  {/* <DragDropContext
                     onDragEnd={this.onDragEnd}
                     onDragStart={this.handleDragStart}
                     onDragUpdate={this.onDragUpdate}
+                  > */}
+                  {/* <Droppable droppableId="edit-form"> */}
+                  {/* {(provided, snapshot) => ( */}
+                  <div
+                    // ref={provided.innerRef}
+                    // {...provided.droppableProps}
+                    style={{ position: 'relative' }}
                   >
-                    <Droppable droppableId="edit-form">
-                      {(provided, snapshot) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.droppableProps}
-                          style={{ position: 'relative' }}
-                        >
-                          {map(renderBlocks, (block, index) => (
-                            <Draggable
-                              draggableId={block}
-                              index={index}
-                              key={block}
-                            >
-                              {(provided) => (
-                                <div
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  className={`block-editor-${blocksDict[block]['@type']}`}
-                                >
-                                  <div style={{ position: 'relative' }}>
-                                    <div
-                                      style={{
-                                        visibility:
-                                          this.contextData.selected === block &&
-                                          !this.hideHandler(blocksDict[block])
-                                            ? 'visible'
-                                            : 'hidden',
-                                        display: 'inline-block',
-                                      }}
-                                      {...provided.dragHandleProps}
-                                      className="drag handle wrapper"
-                                    >
-                                      <Icon name={dragSVG} size="18px" />
-                                    </div>
-
-                                    <EditBlock
-                                      id={block}
-                                      index={index}
-                                      type={blocksDict[block]['@type']}
-                                      key={block}
-                                      handleKeyDown={this.handleKeyDown}
-                                      onAddBlock={this.onAddBlock}
-                                      onChangeBlock={this.onChangeBlock}
-                                      onMutateBlock={this.onMutateBlock}
-                                      onChangeField={this.onChangeField}
-                                      onDeleteBlock={this.onDeleteBlock}
-                                      onSelectBlock={this.onSelectBlock}
-                                      onMoveBlock={this.onMoveBlock}
-                                      onFocusPreviousBlock={
-                                        this.onFocusPreviousBlock
-                                      }
-                                      onFocusNextBlock={this.onFocusNextBlock}
-                                      data={blocksDict[block]}
-                                      pathname={this.props.pathname}
-                                      block={block}
-                                      selected={
-                                        this.contextData.selected === block
-                                      }
-                                    />
-                                  </div>
-                                </div>
-                              )}
-                            </Draggable>
-                          ))}
-                          {provided.placeholder}
-                          {!isEmpty(placeholderProps) && (
-                            <div
-                              style={{
-                                position: 'absolute',
-                                top: `${placeholderProps.clientY}px`,
-                                height: `${
-                                  placeholderProps.clientHeight + 18
-                                }px`,
-                                background: '#eee',
-                                width: `${placeholderProps.clientWidth}px`,
-                                borderRadius: '3px',
-                              }}
-                            />
-                          )}
-                        </div>
-                      )}
-                    </Droppable>
-                    {this.state.isClient && (
-                      <Portal
-                        node={document.getElementById('sidebar-metadata')}
+                    {map(renderBlocks, (block, index) => (
+                      // <Draggable draggableId={block} index={index} key={block}>
+                      // {(provided) => (
+                      <div
+                        // ref={provided.innerRef}
+                        // {...provided.draggableProps}
+                        className={`block-editor-${blocksDict[block]['@type']}`}
                       >
-                        <UiForm
-                          method="post"
-                          onSubmit={this.onSubmit}
-                          error={keys(this.contextData.errors).length > 0}
-                        >
-                          {schema &&
-                            map(schema.fieldsets, (item) => [
-                              <Segment secondary attached key={item.title}>
-                                {item.title}
-                              </Segment>,
-                              <Segment
-                                attached
-                                key={`fieldset-contents-${item.title}`}
-                              >
-                                {map(item.fields, (field, index) => (
-                                  <Field
-                                    {...schema.properties[field]}
-                                    id={field}
-                                    focus={false}
-                                    value={this.contextData.formData[field]}
-                                    required={
-                                      schema.required.indexOf(field) !== -1
-                                    }
-                                    onChange={this.onChangeField}
-                                    key={field}
-                                    error={this.contextData.errors[field]}
-                                  />
-                                ))}
-                              </Segment>,
-                            ])}
-                        </UiForm>
-                      </Portal>
+                        <div style={{ position: 'relative' }}>
+                          <div
+                            style={{
+                              visibility:
+                                this.contextData.selected === block &&
+                                !this.hideHandler(blocksDict[block])
+                                  ? 'visible'
+                                  : 'hidden',
+                              display: 'inline-block',
+                            }}
+                            // {...provided.dragHandleProps}
+                            className="drag handle wrapper"
+                          >
+                            <Icon name={dragSVG} size="18px" />
+                          </div>
+
+                          <EditBlock
+                            id={block}
+                            index={index}
+                            type={blocksDict[block]['@type']}
+                            key={block}
+                            handleKeyDown={this.handleKeyDown}
+                            onAddBlock={this.onAddBlock}
+                            onChangeBlock={this.onChangeBlock}
+                            onMutateBlock={this.onMutateBlock}
+                            onChangeField={this.onChangeField}
+                            onDeleteBlock={this.onDeleteBlock}
+                            onSelectBlock={this.onSelectBlock}
+                            onMoveBlock={this.onMoveBlock}
+                            onFocusPreviousBlock={this.onFocusPreviousBlock}
+                            onFocusNextBlock={this.onFocusNextBlock}
+                            data={blocksDict[block]}
+                            pathname={this.props.pathname}
+                            block={block}
+                            selected={this.contextData.selected === block}
+                          />
+                        </div>
+                      </div>
+                      // )}
+                      // {/* </Draggable> */}
+                    ))}
+                    {/* {provided.placeholder} */}
+                    {!isEmpty(placeholderProps) && (
+                      <div
+                        style={{
+                          position: 'absolute',
+                          top: `${placeholderProps.clientY}px`,
+                          height: `${placeholderProps.clientHeight + 18}px`,
+                          background: '#eee',
+                          width: `${placeholderProps.clientWidth}px`,
+                          borderRadius: '3px',
+                        }}
+                      />
                     )}
-                  </DragDropContext>
+                  </div>
+                  {/* // )} */}
+                  {/* </Droppable> */}
+                  {this.state.isClient && (
+                    <Portal node={document.getElementById('sidebar-metadata')}>
+                      <UiForm
+                        method="post"
+                        onSubmit={this.onSubmit}
+                        error={keys(this.contextData.errors).length > 0}
+                      >
+                        {schema &&
+                          map(schema.fieldsets, (item) => [
+                            <Segment secondary attached key={item.title}>
+                              {item.title}
+                            </Segment>,
+                            <Segment
+                              attached
+                              key={`fieldset-contents-${item.title}`}
+                            >
+                              {map(item.fields, (field, index) => (
+                                <Field
+                                  {...schema.properties[field]}
+                                  id={field}
+                                  focus={false}
+                                  value={this.contextData.formData[field]}
+                                  required={
+                                    schema.required.indexOf(field) !== -1
+                                  }
+                                  onChange={this.onChangeField}
+                                  key={field}
+                                  error={this.contextData.errors[field]}
+                                />
+                              ))}
+                            </Segment>,
+                          ])}
+                      </UiForm>
+                    </Portal>
+                  )}
+                  {/* </DragDropContext> */}
                 </div>
               )
             ) : (
