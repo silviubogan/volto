@@ -226,10 +226,15 @@ class Toolbar extends Component {
   loadComponent = (type) => {
     const { loadedComponents } = this.state;
     if (!this.state.loadedComponents.includes(type)) {
-      this.setState({
-        loadedComponents: [...loadedComponents, type],
-        hideToolbarBody: toolbarComponents[type].hideToolbarBody || false,
-      });
+      this.setState(
+        {
+          loadedComponents: [...loadedComponents, type],
+          hideToolbarBody: toolbarComponents[type].hideToolbarBody || false,
+        },
+        () => {
+          // debugger;
+        },
+      );
     }
   };
 
@@ -248,6 +253,7 @@ class Toolbar extends Component {
       this.closeMenu();
       return;
     }
+    // debugger;
     // PersonalTools always shows at bottom
     if (selector === 'personalTools') {
       this.setState((state) => ({
@@ -255,10 +261,12 @@ class Toolbar extends Component {
         menuStyle: { bottom: 0 },
       }));
     } else {
+      // setTimeout(() => {
       this.setState((state) => ({
         showMenu: !state.showMenu,
         menuStyle: { top: 0, overflow: 'initial' },
       }));
+      // }, 3000);
     }
     this.loadComponent(selector);
   };
@@ -331,7 +339,6 @@ class Toolbar extends Component {
                         loadComponent={this.loadComponent}
                         unloadComponent={this.unloadComponent}
                         componentIndex={index}
-                        theToolbar={this.theToolbar}
                         key={`personalToolsComponent-${index}`}
                         closeMenu={this.closeMenu}
                         hasActions={haveActions}
@@ -341,20 +348,29 @@ class Toolbar extends Component {
                           loadComponent={this.loadComponent}
                           unloadComponent={this.unloadComponent}
                           componentIndex={index}
-                          theToolbar={this.theToolbar}
                           closeMenu={this.closeMenu}
                           isToolbarEmbedded
                         />
                       </WrapperComponent>
                     );
                   } else {
+                    console.log('NICE', {
+                      pathname: this.props.pathname,
+                      loadComponent: this.loadComponent,
+                      unloadComponent: this.unloadComponent,
+                      closeMenu: this.closeMenu,
+                      content: toolbarComponents[component].contentAsProps
+                        ? this.props.contentn
+                        : null,
+                    });
+                    // debugger;
+
                     return (
                       <ToolbarComponent
                         pathname={this.props.pathname}
                         loadComponent={this.loadComponent}
                         unloadComponent={this.unloadComponent}
                         componentIndex={index}
-                        theToolbar={this.theToolbar}
                         key={`personalToolsComponent-${index}`}
                         closeMenu={this.closeMenu}
                         content={
@@ -419,6 +435,11 @@ class Toolbar extends Component {
                           />
                         </Link>
                       )}
+                    {/* {console.log('LOG', {
+                      content: this.props.content,
+                      is_folterish: this.props.content.is_folderish,
+                      length: this.props.types.length,
+                    })} */}
                     {this.props.content &&
                       this.props.content.is_folderish &&
                       this.props.types.length > 0 && (
@@ -508,13 +529,19 @@ class Toolbar extends Component {
 export default compose(
   injectIntl,
   connect(
-    (state, props) => ({
-      actions: state.actions.actions,
-      token: state.userSession.token,
-      content: state.content.data,
-      pathname: props.pathname,
-      types: filter(state.types.types, 'addable'),
-    }),
+    (state, props) => {
+      console.log('COOL', {
+        types: state.types.types,
+        filtered: filter(state.types.types.items, 'addable'),
+      });
+      return {
+        actions: state.actions.actions,
+        token: state.userSession.token,
+        content: state.content.data,
+        pathname: props.pathname,
+        types: filter(state.types.types.items, 'addable'),
+      };
+    },
     { getTypes, listActions, setExpandedToolbar },
   ),
 )(Toolbar);

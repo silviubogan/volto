@@ -8,6 +8,8 @@ import { flattenToAppURL } from '@plone/volto/helpers';
 import { settings } from '~/config';
 
 const Types = ({ types, pathname, content, currentLanguage }) => {
+  // console.log('TYPES COMPONENT', { types, pathname, content, currentLanguage });
+
   return types.length > 0 ? (
     <div className="menu-more pastanaga-menu">
       <header>
@@ -114,7 +116,7 @@ Types.propTypes = {
 
 export default connect(
   (state) => ({
-    types: filter(state.types.types, 'addable'),
+    types: filter(state.types.types.items, 'addable'),
     currentLanguage: state.intl.locale,
   }),
   {},
