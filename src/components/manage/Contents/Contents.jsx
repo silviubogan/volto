@@ -86,7 +86,52 @@ import sortDownSVG from '@plone/volto/icons/sort-down.svg';
 import sortUpSVG from '@plone/volto/icons/sort-up.svg';
 import downKeySVG from '@plone/volto/icons/down-key.svg';
 import moreSVG from '@plone/volto/icons/more.svg';
+import ObjectListWidget from '../Widgets/ObjectListWidget';
+
 const defaultIndexes = ['review_state', 'ModificationDate', 'EffectiveDate'];
+
+export const LinkSchema = {
+  title: 'Link',
+  // description:
+  //   'Specify the object to link to. It can be on this site already (Internal), an object you upload (Upload), from an external site (External), an email address (Email), or an anchor on this page (Anchor).',
+  fieldsets: [
+    {
+      id: 'internal',
+      title: 'Internal',
+      fields: ['internal_link'],
+    },
+    {
+      id: 'external',
+      title: 'External',
+      fields: ['external_link'],
+    },
+    {
+      id: 'email',
+      title: 'Email',
+      fields: ['email_address', 'email_subject'],
+    },
+  ],
+  properties: {
+    internal_link: {
+      widget: 'object_browser',
+      title: 'Internal link',
+      default: [],
+    },
+    external_link: {
+      title: 'External URL',
+      description:
+        'URL can be relative within this site or absolute if it starts with http:// or https://',
+    },
+    email_address: {
+      title: 'Email address',
+    },
+    email_subject: {
+      title: 'Email subject',
+      description: 'Optional',
+    },
+  },
+  required: [],
+};
 
 const messages = defineMessages({
   back: {
@@ -374,6 +419,12 @@ class Contents extends Component {
       sort_on: this.props.sort?.on || 'getObjPositionInParent',
       sort_order: this.props.sort?.order || 'ascending',
       isClient: false,
+      links: [
+        {
+          internal_link: 'https://abc.def',
+        },
+        { internal_link: 'https://def.ghi' },
+      ],
     };
     this.filterTimeout = null;
   }
@@ -966,6 +1017,26 @@ class Contents extends Component {
     const folderContentsAction = find(this.props.objectActions, {
       id: 'folderContents',
     });
+
+    return (
+      <ObjectListWidget
+        id="1234"
+        schema={LinkSchema}
+        onChange={(id, val) => {
+          this.setState({ links: val });
+        }}
+        value={this.state.links}
+        required={true}
+        title="My List"
+        description="My Description"
+        onDelete={() => {
+          alert('Delete');
+        }}
+        onEdit={() => {
+          alert('Edit');
+        }}
+      />
+    );
 
     return this.props.token && this.props.objectActions.length > 0 ? (
       <>

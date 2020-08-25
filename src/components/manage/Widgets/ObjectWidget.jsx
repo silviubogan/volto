@@ -13,11 +13,11 @@ const ObjectWidget = ({
 }) => {
   const renderFieldSet = React.useCallback(
     (fieldset) => {
-      return fieldset.fields.map((field) => {
+      return fieldset.fields.map((field, index) => {
         return (
           <Field
             {...schema.properties[field]}
-            id={field}
+            id={`${field}`} // if we add here -${id} the form does not work
             fieldset={fieldset.title.toLowerCase()}
             value={value?.[field]}
             required={schema.required.indexOf(field) !== -1}

@@ -19,6 +19,8 @@ import addSVG from '@plone/volto/icons/add.svg';
 
 import ObjectWidget from './ObjectWidget';
 
+import { v4 as uuid } from 'uuid';
+
 // TODO: make the ObjectWidget and ObjectListWidget (at least keyboard) accessible (e.g. Esc should close the Modal)
 // - see: https://github.com/Semantic-Org/Semantic-UI/issues/5053
 
@@ -51,51 +53,58 @@ const messages = defineMessages({
 
 export const FlatObjectList = injectIntl(
   ({ id, value = [], schema, onChange, intl }) => {
+    const [uuids, setUuids] = React.useState(value.map(() => uuid()));
+
     return (
       <div className="objectlist-widget-content">
-        {value.map((obj, index) => (
-          // TODO: notice that the Fragment key={} might cause problems, need to test
-          <Fragment key={index}>
-            <Grid>
-              <Grid.Column width={11}>
-                <Segment>
-                  <ObjectWidget
-                    id={`${id}-${index}`}
-                    key={index}
-                    schema={schema}
-                    value={obj}
-                    onChange={(fi, fv) => {
-                      const newvalue = value.map((v, i) =>
-                        i !== index ? v : fv,
-                      );
-                      onChange(id, newvalue);
-                    }}
-                  />
-                </Segment>
-              </Grid.Column>
-              <Grid.Column width={1}>
-                <Button.Group>
-                  <Button
-                    basic
-                    circular
-                    size="mini"
-                    title={intl.formatMessage(messages.delete)}
-                    aria-label={intl.formatMessage(messages.delete)}
-                    onClick={() =>
-                      onChange(
-                        id,
-                        value.filter((v, i) => i !== index),
-                      )
-                    }
-                  >
-                    {/* TODO: instead of px use rem if possible */}
-                    <VoltoIcon size="20px" name={deleteSVG} />
-                  </Button>
-                </Button.Group>
-              </Grid.Column>
-            </Grid>
-          </Fragment>
-        ))}
+        {value.map((obj, index) => {
+          // using an ID instead of index for React key prop because, in future,
+          // the items might be filterable or reorderable
+          const k = uuids[index];
+          return (
+            <Fragment key={k}>
+              <Grid>
+                <Grid.Column width={11}>
+                  <Segment>
+                    <ObjectWidget
+                      id={`${id}-${k}`}
+                      key={k}
+                      schema={schema}
+                      value={obj}
+                      onChange={(fi, fv) => {
+                        const newvalue = value.map((v, i) =>
+                          i !== index ? v : fv,
+                        );
+                        onChange(id, newvalue);
+                      }}
+                    />
+                  </Segment>
+                </Grid.Column>
+                <Grid.Column width={1}>
+                  <Button.Group>
+                    <Button
+                      basic
+                      circular
+                      size="mini"
+                      title={intl.formatMessage(messages.delete)}
+                      aria-label={intl.formatMessage(messages.delete)}
+                      onClick={() => {
+                        setUuids({ ...uuids, [index]: undefined });
+                        return onChange(
+                          id,
+                          value.filter((v, i) => i !== index),
+                        );
+                      }}
+                    >
+                      {/* TODO: instead of px use rem if possible: 1.5rem */}
+                      <VoltoIcon size="20px" name={deleteSVG} />
+                    </Button>
+                  </Button.Group>
+                </Grid.Column>
+              </Grid>
+            </Fragment>
+          );
+        })}
       </div>
     );
   },
