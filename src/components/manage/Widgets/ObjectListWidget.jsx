@@ -60,6 +60,7 @@ const messages = defineMessages({
 });
 
 // TODO: solve issue: having 3 objects in the list and deleting the second throws an error in the browser console
+// Possible solution: combine onChange and removeUuid into a single function (method) so that there is no escape for rerendering between these two operations.
 
 export const FlatObjectList = injectIntl(
   ({ id, value = [], schema, onChange, intl, uuids, removeUuid }) => {
