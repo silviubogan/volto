@@ -21,7 +21,8 @@ import ObjectWidget from './ObjectWidget';
 
 import { v4 as uuid } from 'uuid';
 
-// TODO: make the ObjectWidget and ObjectListWidget (at least keyboard) accessible (e.g. Esc should close the Modal)
+// TODO: make the ObjectWidget and ObjectListWidget (at least keyboard)
+// accessible (e.g. Esc should close the Modal)
 // - see: https://github.com/Semantic-Org/Semantic-UI/issues/5053
 
 const messages = defineMessages({
@@ -58,8 +59,8 @@ export const FlatObjectList = injectIntl(
     return (
       <div className="objectlist-widget-content">
         {value.map((obj, index) => {
-          // using an ID instead of index for React key prop because, in future,
-          // the items might be filterable or reorderable
+          // here we are using an ID instead of index for React key prop
+          // because, in future, the items might be filterable or reorderable
           const k = uuids[index];
           return (
             <Fragment key={k}>
@@ -96,8 +97,7 @@ export const FlatObjectList = injectIntl(
                         );
                       }}
                     >
-                      {/* TODO: instead of px use rem if possible: 1.5rem */}
-                      <VoltoIcon size="20px" name={deleteSVG} />
+                      <VoltoIcon size="1.5rem" name={deleteSVG} />
                     </Button>
                   </Button.Group>
                 </Grid.Column>
@@ -143,8 +143,9 @@ export const ModalObjectListForm = injectIntl((props) => {
   }, []);
 
   /**
-   * For when `value` is updated outside of the Modal and the Modal is reopened after that.
-   * (The current behaviour is that the contents of the reopened Modal are not updated.)
+   * For when `value` is updated outside of the Modal and the Modal is reopened
+   * after that. (The current behaviour is that the contents of the reopened
+   * Modal are not updated.)
    **/
   React.useEffect(() => {
     setStateValue(value);
@@ -182,9 +183,13 @@ export const ModalObjectListForm = injectIntl((props) => {
           onClick={() => {
             setStateValue([...stateValue, createEmpty()]);
           }}
+          style={{ verticalAlign: 'bottom' }}
         >
-          {/* TODO: instead of px use rem if possible */}
-          <VoltoIcon size="18px" name={addSVG} />
+          <VoltoIcon
+            size="1.5rem"
+            name={addSVG}
+            style={{ verticalAlign: 'bottom' }}
+          />
           Add {schema.title}
         </Button>
 

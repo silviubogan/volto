@@ -16,6 +16,7 @@ const defaultSize = '36px';
  * @param {string} props.color Color of the Icon.
  * @param {string} props.className className to add to the component.
  * @param {string} props.title Title (a11y).
+ * @param {string} props.style An optional object with additional CSS properties to apply to the rendered `<svg>` element.
  * @returns {string} Markup of the component.
  *
  * Use:
@@ -32,11 +33,16 @@ const defaultSize = '36px';
  *
  * for further reference see {@link https://kitconcept.com/blog/pastanaga-icon-system/ | here}
  */
-const Icon = ({ name, size, color, className, title, onClick }) => (
+const Icon = ({ name, size, color, className, title, onClick, style }) => (
   <svg
     xmlns={name.attributes && name.attributes.xmlns}
     viewBox={name.attributes && name.attributes.viewBox}
-    style={{ height: size, width: 'auto', fill: color || 'currentColor' }}
+    style={{
+      height: size,
+      width: 'auto',
+      fill: color || 'currentColor',
+      ...style,
+    }}
     className={className ? `icon ${className}` : 'icon'}
     onClick={onClick}
     dangerouslySetInnerHTML={{
@@ -61,6 +67,7 @@ Icon.propTypes = {
   className: PropTypes.string,
   title: PropTypes.string,
   onClick: PropTypes.func,
+  style: PropTypes.object,
 };
 
 /**
@@ -74,6 +81,7 @@ Icon.defaultProps = {
   className: null,
   title: null,
   onClick: null,
+  style: {},
 };
 
 export default Icon;
