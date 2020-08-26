@@ -50,6 +50,11 @@ const messages = defineMessages({
     id: 'A collection of {count} items',
     defaultMessage: 'A collection of {count} items',
   },
+  emptyListHint: {
+    id: 'Click the Add button below to add an item to this empty list.',
+    defaultMessage:
+      'Click the Add button below to add an item to this empty list.',
+  },
 });
 
 export const FlatObjectList = injectIntl(
@@ -156,14 +161,18 @@ export const ModalObjectListForm = injectIntl((props) => {
       <Modal.Header>{title}</Modal.Header>
       <Modal.Content scrolling>
         <div ref={modalContentRef} data-testid="modal-content">
-          <FlatObjectList
-            id={id}
-            value={stateValue}
-            schema={schema}
-            onChange={(id, v) => {
-              setStateValue(v);
-            }}
-          />
+          {stateValue.length > 0 ? (
+            <FlatObjectList
+              id={id}
+              value={stateValue}
+              schema={schema}
+              onChange={(id, v) => {
+                setStateValue(v);
+              }}
+            />
+          ) : (
+            intl.formatMessage(messages.emptyListHint)
+          )}
         </div>
       </Modal.Content>
       <Modal.Actions>

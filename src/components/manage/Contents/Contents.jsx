@@ -1030,10 +1030,10 @@ class Contents extends Component {
         title="My List"
         description="My Description"
         onDelete={() => {
-          alert('Delete');
+          // alert('Delete');
         }}
         onEdit={() => {
-          alert('Edit');
+          // alert('Edit');
         }}
       />
     );

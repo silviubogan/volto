@@ -12,12 +12,14 @@ const ObjectWidget = ({
   ...props
 }) => {
   const renderFieldSet = React.useCallback(
-    (fieldset) => {
+    (fieldset, fieldsetIndex) => {
       return fieldset.fields.map((field, index) => {
+        const myIndex = index;
+        console.log('TODO', field, myIndex);
         return (
           <Field
             {...schema.properties[field]}
-            id={`${field}`} // if we add here -${id} the form does not work
+            id={`${field}-${fieldsetIndex}-${myIndex}`} // if we add here -${id} the form does not work
             fieldset={fieldset.title.toLowerCase()}
             value={value?.[field]}
             required={schema.required.indexOf(field) !== -1}
@@ -35,24 +37,31 @@ const ObjectWidget = ({
   );
 
   const createTabPane = React.useCallback(
-    (fs) => () => {
-      return <Tab.Pane>{renderFieldSet(fs)}</Tab.Pane>;
+    (fs, index) => {
+      console.log('outer fieldset #', index);
+      return (() => {
+        const idx = index;
+        return () => {
+          console.log('inner fieldset #', idx);
+          return <Tab.Pane>{renderFieldSet(fs, idx)}</Tab.Pane>;
+        };
+      })();
     },
     [renderFieldSet],
   );
 
   const createTab = React.useCallback(
-    (fieldset) => {
+    (fieldset, index) => {
       return {
         menuItem: fieldset.title,
-        render: createTabPane(fieldset),
+        render: createTabPane(fieldset, index),
       };
     },
     [createTabPane],
   );
 
   return schema.fieldsets.length === 1 ? (
-    renderFieldSet(schema.fieldsets[0])
+    renderFieldSet(schema.fieldsets[0], 0)
   ) : (
     <Tab panes={schema.fieldsets.map(createTab)} /> // lazy loading
   );
