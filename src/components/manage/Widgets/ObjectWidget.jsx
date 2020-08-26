@@ -15,11 +15,12 @@ const ObjectWidget = ({
     (fieldset, fieldsetIndex) => {
       return fieldset.fields.map((field, index) => {
         const myIndex = index;
-        console.log('TODO', field, myIndex);
         return (
           <Field
             {...schema.properties[field]}
-            id={`${field}-${fieldsetIndex}-${myIndex}`} // if we add here -${id} the form does not work
+            // TODO: putting fieldsetIndex in this expression makes the form not
+            // work (can't type in it)
+            id={`${field}-${fieldsetIndex}-${myIndex}`}
             fieldset={fieldset.title.toLowerCase()}
             value={value?.[field]}
             required={schema.required.indexOf(field) !== -1}
@@ -38,12 +39,13 @@ const ObjectWidget = ({
 
   const createTabPane = React.useCallback(
     (fs, index) => {
+      // TODO: issue: idx is 0 in the inner function
       console.log('outer fieldset #', index);
       return (() => {
         const idx = index;
         return () => {
           console.log('inner fieldset #', idx);
-          return <Tab.Pane>{renderFieldSet(fs, idx)}</Tab.Pane>;
+          return <Tab.Pane>{renderFieldSet(fs, index)}</Tab.Pane>;
         };
       })();
     },

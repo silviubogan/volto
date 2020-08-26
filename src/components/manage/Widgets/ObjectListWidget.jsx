@@ -248,8 +248,6 @@ export const ObjectListWidget = injectIntl(
       fieldSet,
       title,
       description,
-      onDelete,
-      onEdit,
       intl,
     } = props;
 
@@ -266,6 +264,7 @@ export const ObjectListWidget = injectIntl(
           onSave={(id, val) => {
             onChange(id, val);
             setOpen(false);
+            // TODO: yellow fade-out animation when change is done
           }}
           onCancel={() => {
             setOpen(false);
@@ -285,13 +284,7 @@ export const ObjectListWidget = injectIntl(
             <Grid.Row stretched>
               <Grid.Column width="4">
                 <div className="wrapper">
-                  <label htmlFor={`field-${id}`}>
-                    <i
-                      aria-hidden="true"
-                      className="grey bars icon drag handle"
-                    />
-                    {title}
-                  </label>
+                  <label htmlFor={`field-${id}`}>{title}</label>
                 </div>
               </Grid.Column>
               <Grid.Column width="8">
@@ -312,9 +305,6 @@ export const ObjectListWidget = injectIntl(
                     data-testid="big-pen-button"
                     onClick={() => {
                       setOpen(true);
-                      if (typeof onEdit === 'function') {
-                        onEdit(id, schema);
-                      }
                     }}
                   >
                     <Icon name="write square" size="large" color="blue" />
@@ -325,7 +315,6 @@ export const ObjectListWidget = injectIntl(
                     className="item ui noborder button"
                     onClick={() => {
                       onChange(id, []);
-                      onDelete(id);
                     }}
                   >
                     <Icon name="close" size="large" color="red" />
@@ -369,8 +358,6 @@ ObjectListWidget.propTypes = {
   fieldSet: PropTypes.string,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  onEdit: PropTypes.func.isRequired,
 };
 
 /**
