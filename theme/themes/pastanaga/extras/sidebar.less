@@ -44,6 +44,15 @@
   }
 }
 
+@keyframes field-just-changed-anim {
+  0% {
+    background-color: yellow;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
 @media only screen and (max-width: @largestMobileScreen) {
   .has-toolbar {
     .sidebar-container {
@@ -435,4 +444,8 @@
   &:hover {
     background-color: #edf1f2 !important;
   }
+}
+
+.field-just-changed {
+  animation: field-just-changed-anim 0.5s;
 }

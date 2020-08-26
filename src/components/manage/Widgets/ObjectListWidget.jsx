@@ -19,6 +19,8 @@ import addSVG from '@plone/volto/icons/add.svg';
 
 import ObjectWidget from './ObjectWidget';
 
+import cx from 'classnames';
+
 import { v4 as uuid } from 'uuid';
 
 // TODO: make the ObjectWidget and ObjectListWidget (at least keyboard)
@@ -276,6 +278,7 @@ export const ObjectListWidget = injectIntl(
     } = props;
 
     const [open, setOpen] = useState(false);
+    const [isJustChanged, setIsJustChanged] = useState(false);
 
     return (
       <>
@@ -288,7 +291,7 @@ export const ObjectListWidget = injectIntl(
           onSave={(id, val) => {
             onChange(id, val);
             setOpen(false);
-            // TODO: yellow fade-out animation when change is done
+            setIsJustChanged(true);
           }}
           onCancel={() => {
             setOpen(false);
@@ -301,7 +304,10 @@ export const ObjectListWidget = injectIntl(
           inline
           required={required}
           error={(error || []).length > 0}
-          className={description ? 'help text' : 'text'}
+          className={cx('text', {
+            help: description,
+            'field-just-changed': isJustChanged,
+          })}
           id={`${fieldSet || 'field'}-${id}`}
         >
           <Grid>
@@ -328,6 +334,7 @@ export const ObjectListWidget = injectIntl(
                     className="item ui noborder button"
                     data-testid="big-pen-button"
                     onClick={() => {
+                      setIsJustChanged(false);
                       setOpen(true);
                     }}
                   >
