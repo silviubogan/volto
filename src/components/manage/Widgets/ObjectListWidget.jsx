@@ -9,7 +9,7 @@ import {
   Modal,
   Segment,
 } from 'semantic-ui-react';
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import { Icon as VoltoIcon } from '@plone/volto/components';
@@ -58,56 +58,54 @@ const messages = defineMessages({
 });
 
 export const FlatObjectList = injectIntl(
-  ({ id, value = [], schema, onChange, intl }) => {
-    const [uuids, setUuids] = React.useState(value.map(() => uuid()));
-
+  ({ id, value = [], schema, onChange, intl, uuids, removeUuid }) => {
     return (
       <div className="objectlist-widget-content">
         {value.map((obj, index) => {
           // here we are using an ID instead of index for React key prop
           // because, in future, the items might be filterable or reorderable
-          const k = uuids[index];
+          const k = uuids ? uuids[index] : index;
           return (
-            <Fragment key={k}>
-              <Grid>
-                <Grid.Column width={11}>
-                  <Segment>
-                    <ObjectWidget
-                      id={`${id}-${k}`}
-                      key={k}
-                      schema={schema}
-                      value={obj}
-                      onChange={(fi, fv) => {
-                        const newvalue = value.map((v, i) =>
-                          i !== index ? v : fv,
-                        );
-                        onChange(id, newvalue);
-                      }}
-                    />
-                  </Segment>
-                </Grid.Column>
-                <Grid.Column width={1}>
-                  <Button.Group>
-                    <Button
-                      basic
-                      circular
-                      size="mini"
-                      title={intl.formatMessage(messages.delete)}
-                      aria-label={intl.formatMessage(messages.delete)}
-                      onClick={() => {
-                        setUuids({ ...uuids, [index]: undefined });
-                        return onChange(
-                          id,
-                          value.filter((v, i) => i !== index),
-                        );
-                      }}
-                    >
-                      <VoltoIcon size="1.5rem" name={deleteSVG} />
-                    </Button>
-                  </Button.Group>
-                </Grid.Column>
-              </Grid>
-            </Fragment>
+            <Grid key={k}>
+              <Grid.Column width={11}>
+                <Segment>
+                  <ObjectWidget
+                    id={`${id}-${k}`}
+                    key={k}
+                    schema={schema}
+                    value={obj}
+                    onChange={(fi, fv) => {
+                      const newvalue = value.map((v, i) =>
+                        i !== index ? v : fv,
+                      );
+                      onChange(id, newvalue);
+                    }}
+                  />
+                </Segment>
+              </Grid.Column>
+              <Grid.Column width={1}>
+                <Button.Group>
+                  <Button
+                    basic
+                    circular
+                    size="mini"
+                    title={intl.formatMessage(messages.delete)}
+                    aria-label={intl.formatMessage(messages.delete)}
+                    onClick={() => {
+                      onChange(
+                        id,
+                        value.filter((v, i) => i !== index),
+                      );
+                      if (removeUuid) {
+                        removeUuid(index);
+                      }
+                    }}
+                  >
+                    <VoltoIcon size="1.5rem" name={deleteSVG} />
+                  </Button>
+                </Button.Group>
+              </Grid.Column>
+            </Grid>
           );
         })}
       </div>
@@ -139,6 +137,7 @@ export const ModalObjectListForm = injectIntl((props) => {
   } = props;
 
   const [stateValue, setStateValue] = useState(value);
+  const [uuids, setUuids] = React.useState(value.map(() => uuid()));
   const modalContentRef = React.useRef(null);
 
   useScrollToBottomAutomatically(modalContentRef, stateValue);
@@ -146,6 +145,18 @@ export const ModalObjectListForm = injectIntl((props) => {
   const createEmpty = React.useCallback(() => {
     return {};
   }, []);
+
+  const removeUuid = React.useCallback(
+    (index) => {
+      const newUuids = [...uuids].splice(index, 1);
+      setUuids(newUuids);
+    },
+    [uuids],
+  );
+
+  const addUuid = React.useCallback(() => {
+    setUuids([...uuids, uuid()]);
+  }, [uuids]);
 
   /**
    * For when `value` is updated outside of the Modal and the Modal is reopened
@@ -169,6 +180,8 @@ export const ModalObjectListForm = injectIntl((props) => {
               onChange={(id, v) => {
                 setStateValue(v);
               }}
+              uuids={uuids}
+              removeUuid={removeUuid}
             />
           ) : (
             intl.formatMessage(messages.emptyListHint)
@@ -190,6 +203,7 @@ export const ModalObjectListForm = injectIntl((props) => {
             schemaTitle: schema.title,
           })}
           onClick={() => {
+            addUuid();
             setStateValue([...stateValue, createEmpty()]);
           }}
           style={{ verticalAlign: 'bottom' }}

@@ -151,6 +151,7 @@ class TextWidget extends Component {
       required: ['id', 'title'],
     };
 
+    const myId = `field-${id}`;
     return (
       <FormFieldWrapper {...this.props} draggable={true} className="text">
         {onEdit && (
@@ -171,7 +172,7 @@ class TextWidget extends Component {
           </div>
         )}
         <Input
-          id={`field-${id}`}
+          id={myId}
           name={id}
           value={value || ''}
           disabled={onEdit !== null}

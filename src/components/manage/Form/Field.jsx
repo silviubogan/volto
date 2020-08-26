@@ -101,6 +101,7 @@ const getWidgetByType = (type) => widgets.type[type] || null;
  * @returns {string} Markup of the component.
  */
 const Field = (props, { intl }) => {
+  console.log("FIELD ID", props.id);
   const Widget =
     getWidgetByFieldId(props.id) ||
     getWidgetByName(props.widget) ||

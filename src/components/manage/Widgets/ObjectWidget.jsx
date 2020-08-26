@@ -3,6 +3,55 @@ import { Tab } from 'semantic-ui-react';
 import Field from '../Form/Field';
 import PropTypes from 'prop-types';
 
+const FieldSet = ({ data, index, schema, value, errors, onChange, id }) => {
+  return data.fields.map((field, idx) => {
+    const myIndex = idx;
+    const str = `${field}-${myIndex}-${id}`;
+    console.log('FIELDSET INDEX', str);
+    return (
+      <Field
+        {...schema.properties[field]}
+        // TODO: putting fieldsetIndex in this expression makes the form not
+        // work (can't type in it)
+        id={str}
+        fieldset={data.title.toLowerCase()}
+        value={value?.[field]}
+        required={schema.required.indexOf(field) !== -1}
+        onChange={(field2, fieldvalue) => {
+          return onChange(id, { ...value, [field]: fieldvalue });
+        }}
+        key={field}
+        error={errors?.[field]}
+        title={schema.properties[field].title}
+      />
+    );
+  });
+};
+
+const MyTabPane = ({
+  fieldSetData,
+  index,
+  schema,
+  errors,
+  value,
+  onChange,
+  id,
+}) => {
+  return (
+    <Tab.Pane>
+      <FieldSet
+        data={fieldSetData}
+        index={index}
+        schema={schema}
+        errors={errors}
+        value={value}
+        onChange={onChange}
+        id={id}
+      />
+    </Tab.Pane>
+  );
+};
+
 const ObjectWidget = ({
   schema,
   value, // not checked to not contain unknown fields
@@ -11,59 +60,36 @@ const ObjectWidget = ({
   id,
   ...props
 }) => {
-  const renderFieldSet = React.useCallback(
-    (fieldset, fieldsetIndex) => {
-      return fieldset.fields.map((field, index) => {
-        const myIndex = index;
-        return (
-          <Field
-            {...schema.properties[field]}
-            // TODO: putting fieldsetIndex in this expression makes the form not
-            // work (can't type in it)
-            id={`${field}-${fieldsetIndex}-${myIndex}`}
-            fieldset={fieldset.title.toLowerCase()}
-            value={value?.[field]}
-            required={schema.required.indexOf(field) !== -1}
-            onChange={(field, fieldvalue) => {
-              return onChange(id, { ...value, [field]: fieldvalue });
-            }}
-            key={field}
-            error={errors?.[field]}
-            title={schema.properties[field].title}
-          />
-        );
-      });
-    },
-    [errors, id, onChange, schema.properties, schema.required, value],
-  );
-
-  const createTabPane = React.useCallback(
-    (fs, index) => {
-      // TODO: issue: idx is 0 in the inner function
-      console.log('outer fieldset #', index);
-      return (() => {
-        const idx = index;
-        return () => {
-          console.log('inner fieldset #', idx);
-          return <Tab.Pane>{renderFieldSet(fs, index)}</Tab.Pane>;
-        };
-      })();
-    },
-    [renderFieldSet],
-  );
-
   const createTab = React.useCallback(
     (fieldset, index) => {
       return {
         menuItem: fieldset.title,
-        render: createTabPane(fieldset, index),
+        render: () => (
+          <MyTabPane
+            errors={errors}
+            fieldSetData={fieldset}
+            index={index}
+            onChange={onChange}
+            schema={schema}
+            value={value}
+            id={id}
+          />
+        ),
       };
     },
-    [createTabPane],
+    [errors, id, onChange, schema, value],
   );
 
   return schema.fieldsets.length === 1 ? (
-    renderFieldSet(schema.fieldsets[0], 0)
+    <FieldSet
+      data={schema.fieldsets[0]}
+      index={0}
+      schema={schema}
+      errors={errors}
+      value={value}
+      onChange={onChange}
+      id={id}
+    />
   ) : (
     <Tab panes={schema.fieldsets.map(createTab)} /> // lazy loading
   );
