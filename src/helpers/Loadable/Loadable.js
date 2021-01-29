@@ -40,11 +40,7 @@ export function preloadLazyLibs(maybeNames, forwardRef = false) {
   return injectLazyLibs(maybeNames, forwardRef, false);
 }
 
-export function injectLazyLibs(
-  maybeNames,
-  forwardRef = false,
-  shouldRerender = true,
-) {
+export function injectLazyLibs(maybeNames, forwardRef = false) {
   const libraries = Array.isArray(maybeNames) ? maybeNames : [maybeNames];
 
   const decorator = (WrappedComponent) => {
